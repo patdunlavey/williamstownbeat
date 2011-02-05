@@ -1,0 +1,30 @@
+<?php
+
+// $Id: block_ie6.module,v 1.1.2.2 2010/04/30 02:47:23 inadarei Exp $
+
+/**
+* @File main block_ie6 module file
+*/
+
+function block_ie6_theme() {
+  return array(
+    'block_ie6' => array(
+      'arguments' => array('blockie_module_path' => NULL),
+      'template' => 'block-ie6',
+    ),
+  );
+}
+
+function block_ie6_init() {
+  
+  $browser = $_SERVER['HTTP_USER_AGENT'];
+  $pattern = '#MSIE [4|5|6]{1}\.\d{1}#ims';
+  if (!preg_match($pattern, $browser)) { return; }
+  
+  $blockie_module_path = drupal_get_path('module', 'block_ie6');
+  $html = theme('block_ie6', $blockie_module_path);  
+    
+  echo $html;
+  exit(0);
+
+}

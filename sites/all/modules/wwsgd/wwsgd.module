@@ -1,0 +1,51 @@
+<?php
+// $Id: wwsgd.module,v 1.1.2.1.2.7 2010/02/12 01:37:00 richard Exp $
+
+function wwsgd_block($op = 'list', $delta = 0, $edit = array()) {
+  $wwsgd_block_text_default = "Is this your first time visiting?  Consider subscribing to <a href=\"rss.xml\">this site's RSS feed</a> to get updates.";
+  switch ($op) {
+  case 'list':
+    $blocks = array();
+    $blocks[0] = array(
+      'info' => 'What Would Seth Godin Do?',
+      'status' => '',
+      'weight' => 0,
+      'visibility' => 1,
+    );
+    return $blocks;
+  break;
+  case 'configure':
+    $form = array();
+    $form['wwsgd_block_text'] = array(
+      '#type' => 'textarea',
+      '#size' => 150,
+      '#description' => 'This text will display in the sidebar block for first-time visitors',
+      '#default_value' => variable_get('wwsgd_block_text', $wwsgd_block_text_default),
+    );
+    $form['wwsgd_max_visits'] = array(
+      '#type' => 'select',
+      '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 40)),
+      '#default_value' => variable_get('wwsgd_max_visits', 5),
+      '#description' => 'Number of visits before the block turns off for a user.',
+    );
+    return $form;
+    break;
+  case 'save':
+    variable_set('wwsgd_max_visits', $edit['wwsgd_max_visits']);
+    variable_set('wwsgd_block_text', $edit['wwsgd_block_text']); 
+    break;
+  case 'view':
+    $wwsgd_block = array();
+    $wwsgd_visits = $_COOKIE['wwsgd_visits'];
+    $wwsgd_block_visits_setting = variable_get('wwsgd_max_visits', 5);
+    $wwsgd_block_text = variable_get('wwsgd_block_text', $wwsgd_block_text_default);
+    if ($_COOKIE['wwsgd_visits'] < $wwsgd_block_visits_setting) {
+      $wwsgd_block['content'] = $wwsgd_block_text;  
+      $wwsgd_visits = $_COOKIE['wwsgd_visits'] + 1;
+    }
+    $wwsgd_host = $_SERVER['HTTP_HOST'];
+    setcookie('wwsgd_visits', $wwsgd_visits, time()+60*60*24*365, '/', $wwsgd_host);
+    return $wwsgd_block;
+    break;
+  }
+}

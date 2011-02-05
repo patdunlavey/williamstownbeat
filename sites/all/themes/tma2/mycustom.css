@@ -1,0 +1,901 @@
+/* BEGIN BEGIN BEGIN BEGIN BEGIN
+ * INSTANCE-SPECIFIC CUSTOM CSS 
+ * Use this section for css that is specific to this particular installation
+ * TODO: this should be split into its own css file 
+ */
+
+/* style holiday items on upcoming events calendar */
+.pane-community-calendar .item-list ul li a.term-130 {
+  color:#C86771;
+  text-transform: uppercase;
+  font-size: 80%; 
+}
+
+/* END END END END END
+ * INSTANCE-SPECIFIC CUSTOM CSS 
+ * END END END END END
+ */
+
+
+
+#content {
+font-size:1.0em;
+}
+
+body {
+line-height:1.25em;
+font-family:arial;
+}
+
+  body
+  {
+    background-color:#ffffff;
+  }
+
+#site-name a:link, #site-name a:visited {
+font-family:Georgia;
+}
+h1 { font-size:1.5em; font-family:Georgia;}
+h2,  a.article_title { font-family:Georgia;}
+/*h2,  a.article_title, .views-field-title a { font-size:1.5em; line-height:1.4em;}*/
+.view-og-ghp-cm-ron .views-field-title a,
+.view-cm-frontpage .views-field-title a,
+.view-latest-news-feed  .views-field-title a,
+.view-group-news-feed  .views-field-title a,
+.views_slideshow_singleframe_slide .views-field-title a,
+.view-ron-term  .views-field-title a
+ { font-size:1.5em; line-height:1.4em;}
+
+.view-og-ghp-cm-ron li .views-field-title a,
+.view-cm-frontpage li .views-field-title a,
+.view-latest-news-feed  li .views-field-title a,
+.view-group-news-feed li .views-field-title a,
+.view-ron-term li .views-field-title a,
+.views_slideshow_singleframe_slide li .views-field-title a
+ { font-size:1.0em; line-height:1.2em;}
+
+h2,  a.article_title { font-size:1.5em; line-height:1.4em;}
+
+div.views_slideshow_singleframe_slide {
+  background:transparent;
+}
+
+#site-name a:hover
+ {
+   color: #888; background: none;
+ }
+
+td.j div {
+  float:left;
+}
+td.j font>br {
+display:none;
+}
+
+#content div.views-row {
+/*  border:1px solid #ccc;
+  padding:4px;
+  margin-top:10px;
+  */
+  padding-bottom:4px;
+  float:left;
+  width:100%;
+}
+
+.item-list ul li {
+list-style-image:none;
+list-style-type:none;
+margin:0;
+padding:0 0 0.3em;
+}
+
+div.feeds-container.active-container{
+float:left;
+}
+/*div.item-list span.field-content>a {*/
+	div.item-list li .field-content {
+	display:block;
+	overflow:hidden;
+	white-space:nowrap;
+	/*width:170px;*/
+	height:1.4em;
+	text-transform:none;
+	}
+div.item-list li span,
+div.item-list li span.field-content {
+/*	display:inline;*/
+}
+div.item-list li.rpx-link {
+/*height:1.4em;*/
+height:inherit;
+}
+
+div.item-list li a { 
+	overflow:inherit;
+}	
+div.item-list li a.rpxnow { 
+		height:inherit;
+		position:relative;
+		bottom:0;
+	}
+div.item-list >h3 {
+font-size:100%;
+color:#888;
+margin:0px;
+height:1em;
+}
+div.item-list ul {
+margin-top:.5em;
+margin-bottom:0;
+}
+
+#content, .two-sidebars #content {
+float:left;
+margin-left:0;
+margin-right:-800px;
+padding:0;
+width:160px;
+}
+#sidebar-wrapper, .two-sidebars #sidebar-wrapper {
+display:inline;
+float:left;
+margin-left:160px;
+margin-right:-960px;
+margin-top:1em;
+padding:0;
+width:800px;
+}
+
+#content-inner {
+margin-bottom:1.5em;
+margin-top:0.5em;
+padding:0;
+}
+
+#sidebar-left {
+float:left;
+margin-left:0;
+margin-right:-300px;
+padding:0;
+width:280px;
+}
+
+.two-sidebars #sidebar-right {
+float:left;
+margin-left:320px;
+margin-right:-600px;
+padding:0;
+width:280px;
+}
+#sidebar-right {
+float:left;
+margin-left:0;
+margin-right:-160px;
+padding:0;
+width:160px;
+}
+#sidebar-right-inner  {
+margin:0 0 0 0;
+padding:0;
+}
+
+.sidebar-right #sidebar-wrapper {
+margin-left:800px;
+width:160px;
+}
+
+.sidebar-right #content {
+margin-left:0;
+margin-right:-800px;
+width:780px;
+}
+
+div.view-og-ghp-cm-ron div.views-row,
+div.view-ron-term div.views-row,
+div.view-cm-frontpage div.views-row {
+	margin-bottom:10px;
+	margin-top:10px;
+	padding:5px 5px 1.5em 5px;
+	border:solid #cccccc 1px;
+/*clear:both;*/
+}
+/*
+div.view-og-ghp-cm-ron div.views-field-title,
+div.view-cm-frontpage div.views-field-title {
+	font-size:1.2em;
+}
+*/
+
+#block-user-0 #edit-name-wrapper, #block-user-0 #edit-pass-wrapper{
+display:block;
+float:left;
+margin:0 10px 0 0px;
+position:relative
+}
+
+#block-user-0 .content {
+margin:0;
+padding:0;
+height:40px;
+}
+
+.views-field-comments-link, .views-field-url {
+}
+
+.links a, .links li, .meta, .meta a, .views-field-created, .views-field-changed, .views-field-url {
+/*	font-size:10px;*/
+}
+
+span.views-field-url a.offsite-link {
+	text-decoration:none;
+	height:inherit;
+	width:inherit;
+	background-image: url('images/linkicon.png');
+	background-repeat: no-repeat;
+	background-position: 0px 2px;
+	display:inherit;
+}
+span.views-field-url a.offsite-link:hover, span.views-field-url a.offsite-link:active {
+	background-image:url("images/linkicon-active.png");
+	text-decoration:inherit;
+}
+
+span.views-field-url span.field-content {
+	display:inline-block;
+	height:12px;
+	width:16px;
+}
+
+div.item-list li.views-row {
+	position:relative;
+}
+	
+ul.menu li a, li.expanded a, li.collapsed a, li.leaf a, .block .item-list ul li a {
+background:none;
+/*border-bottom:1px solid #DADADA;
+border-left:3px solid #DADADA;
+color:#000000;
+display:block;
+font-size:0.8em;
+font-weight:bold;
+height:19px;
+margin:0;
+padding:3px 12px 0 7px;
+text-transform:uppercase;
+*/
+}
+ul.menu li a:hover, li.expanded a:hover, li.collapsed a:hover, li.leaf a:hover, .block .item-list ul li a:hover
+{
+  background: none; 
+/*  background-color: #f1f1f1; */
+}
+
+/*
+div.item-list li span.item-fadeout {
+background:url("images/mask.png") no-repeat scroll right top transparent;
+height:inherit;
+padding:12px 5px 4px;
+position:absolute;
+right:0;
+top:0;
+width:50px;
+}
+*/
+ul.quicktabs_tabs li {
+padding:2px 6px 4px;
+}
+
+ul.quicktabs_tabs {
+margin-top:4px;
+margin-bottom:0;
+}
+
+div.quicktabs_main, .pane-latest-news-feed div.pane-content, .pane-group-news-feed div.pane-content, .pane-community-calendar div.pane-content,
+#sidebar-wrapper .block .content {
+  border: 1px solid #cccccc;
+  padding:5px;
+}
+
+#block-block-3 .block-inner .content {
+  border: inherit;
+  padding:inherit;
+}
+
+#block-menu-secondary-links, #block-block-2, #block-user-1 {
+	float: left;
+	margin-right:20px;
+}
+
+#header-right-blocks li {
+float:left;
+padding:0 0 0 0;
+}
+
+span#welcomeuser {
+	font-weight:bold;
+	font-style:italic;
+}
+
+div.views-field-field-image-fid  {
+background-color:#FFFFFF;
+border:1px solid #CCCCCC;
+float:left;
+margin-right:10px;
+padding:4px;
+}
+
+#edit-comment { height:8em;}
+
+html,body,div,span,applet,object,iframe, h1,h2,h3,h4,h5,h6,p,blockquote,pre, a,abbr,acronym,address,big,cite,code, del,dfn,em,font,img,ins,kbd,q,s,samp, small,strike,strong,sub,sup,tt,var, dl,dt,dd,ol,ul,li, fieldset,form,label,legend, table,caption,tbody,tfoot,thead,tr,th,td
+{
+vertical-align:inherit;
+}
+
+li a.qt_ajax_tab {
+color:#ffffff;
+background-color:#aaaaaa;
+padding:2px 4px;
+border:1px solid #cccccc;
+border-bottom:none;
+}
+li.active a.qt_ajax_tab {
+background-color:#ffffff;
+color:#6699cc;
+}
+
+
+/* Calendar customization
+ *
+ */
+th.calendar-legend {
+display:none;
+}
+
+table.calendar-legend div.stripe {
+width: 50px;
+}
+
+
+.calendar-calendar td .inner div.calendar div, .calendar-calendar td .inner div.calendar div a {
+background-color:transparent;
+}
+
+.calendar-calendar td span.date-display-single, .calendar-calendar td span.date-display-start, .calendar-calendar td span.date-display-end, .calendar-calendar td span.date-display-separator {
+font-weight:inherit;
+}
+
+.calendar-calendar td.empty {
+background:url("images/blackstripe.png") repeat scroll 0 50% transparent;
+}
+
+.calendar-calendar div.date-nav {
+background-color:black;
+}
+
+.calendar-calendar div.date-nav a, .calendar-calendar div.date-nav h3 {
+color:white;
+}
+
+.calendar-calendar td.today .inner div.day a {
+color:#ffffff;
+}
+.calendar-calendar td.today .inner div.day, .calendar-calendar td.today .inner div.day a {
+background:none repeat scroll 0 0 #000000;
+}
+
+.calendar-calendar tr td.today, .calendar-calendar tr.odd td.today, .calendar-calendar tr.even td.today {
+background-color:transparent;
+}
+td.mini.today, td.mini.today a {
+background-color:#000000;
+color:#ffffff;
+font-weight:bold;
+}
+
+td.mini.today, td.mini.today a {
+background-color:#000000;
+color:#ffffff;
+font-weight:bold;
+}
+
+div.mini-day-on a {
+  color:#ff0000;
+  }
+ 
+.calendar-calendar td.calendar-agenda-items div.calendar {
+margin:1px 0px;
+padding:0.25em;
+width:100px;
+}
+
+.front #topbanner, #topbanner {
+background:url("images/greylock-ink960x70.jpg") no-repeat scroll 0 50% transparent;
+}
+#primary {
+height:1.5em;
+padding:0.1em 0;
+}
+
+#navbar {
+margin-bottom:0;
+border-bottom:none;
+}
+
+
+.breadcrumb {
+/* background:url("images/white50.png") repeat scroll 0 0 transparent; */
+margin:0;
+padding: 3px 6px;
+float:none;
+font:inherit;
+font-size:1.0em;
+color: #ffffff;
+background-color:#000000;
+}
+
+.breadcrumb a {
+color:#ffffff;
+text-transform:uppercase;
+padding: 0px 6px;
+letter-spacing: 0;
+}
+
+.gmap-popup {
+width: 300px;
+}
+.block .gmap-popup {
+width: 180px;
+}
+.gmnoprint {
+width: 200px;
+}
+
+div.status {
+background:url("images/status_icons/information_32.png") no-repeat scroll 2px 3px #DDFFFF;
+min-height:32px;
+padding-left:36px;
+padding-top:6px;
+}
+
+a.published-No {
+color:gray;
+text-decoration: line-through;
+}
+
+.block .item-list ul li {
+font-size:inherit;
+clear:both;
+}
+ul.menu li a, li.expanded a, li.collapsed a, li.leaf a, .block .item-list ul li a, .item-list ul li a {
+background:transparent;
+border-bottom:none;
+border-left:none;
+display:inline;
+font-weight:normal;
+font-size:1em;
+margin:0;
+text-transform:inherit;
+color:#6699CC;
+padding:0;
+}
+
+#sidebar-wrapper .block .item-list ul li a {
+font-size:0.8em;
+}
+#sidebar-wrapper .block .item-list ul li {
+height:0.8em;
+}
+
+
+.item-list ul.pager li a {
+  display:inline;
+}
+
+div.node div.field-field-image {
+padding:5px;
+margin-right:10px;
+margin-bottom:0;
+border:1px solid #cccccc;
+float:left;
+}
+
+h2.pane-title {
+  
+}
+
+/** headings **/
+  h1,h2,h3,h4,h5,h6
+  {
+    font-family:Georgia,Times,serif;
+    color:#666;
+    clear:both;
+  }
+  
+  h1
+  {
+    font-size: 2em;
+    line-height: 1.3em;
+    margin-top: 0;
+    margin-bottom: 0; /* 0.5em is equavalent to 1em in the page's base font.
+                             Remember, a margin specified in ems is relative to
+                             the element's font-size, not to the pages' base
+                             font size. So, for example, if we want a 1em margin
+                             (relative to the base font), we have to divide that
+                             length by the element's font-size:
+                             1em / 2em = 0.5em */
+  }
+
+  h2
+  {
+    font-size: 1.5em;
+    line-height: 1.3em;
+    margin-top: 0.667em; /* Equivalent to 1em in the page's base font: 1 / 1.5 = 0.667em */
+    margin-bottom: 0;
+  }
+
+  h3
+  {
+    font-size: 1.2em;
+    line-height: 2;
+    margin-top: 0.769em; /* Equivalent to 1em in the page's base font: 1 / 1.3 = 0.769 */
+    margin-bottom: 0;
+  }
+
+  h4
+  {
+    font-size: 1em;
+    line-height: 1.25;
+    font-weight: bold;
+    margin-top: 0.909em; /* Equivalent to 1em in the page's base font: 1 / 1.1 = 0.909 */
+    margin-bottom: 0;
+  }
+
+  h5
+  {
+    font-size: 1em;
+    line-height: 1.3em;
+    font-weight: bold;
+    margin-top: 0.909em; /* Equivalent to 1em in the page's base font: 1 / 1.1 = 0.909 */
+    margin-bottom: 0;
+  }
+
+  h6
+  {
+    font-size: 1em;
+    line-height: 1.3em;
+    margin-top: 0.909em; /* Equivalent to 1em in the page's base font: 1 / 1.1 = 0.909 */
+    margin-bottom: 0;
+  }
+
+  .views-field-group-nid, .views-field-url, .views-field-field-channel-bullet-fid, .view-og-my div.views-field-title {
+  float:left;
+  margin-right:3px;
+  position:relative;
+  }
+  th.views-field-group-nid {
+  float:inherit;
+  margin-right:3px;
+  position:relative;
+  }
+.views-field-field-channel-bullet-fid {
+/*float:left;*/
+/*margin-right:4px;
+display:inline;*/
+}
+
+.week-view div.view-data-node-data-field-event-date-field-event-date-value, .week-view div.view-data-og-ancestry-nid {
+  display:inline;
+  }
+  .week-view div.view-data-og-ancestry-nid {
+  float:left;
+  }
+  
+  .week-view .view-data-node-title a {
+  white-space: nowrap;
+  }
+
+  .week-view div.view-data-node-title {
+  position:relative;
+  overflow:hidden;
+  width:90%;
+  }
+  
+  .calendar-calendar td.calendar-agenda-items {
+border:1px solid #cccccc;
+text-align:left;
+}
+
+.calendar-calendar th.days.sat, .calendar-calendar th.days.sun {
+background-color:#FFFF88;
+}
+.bt-content ul {
+list-style-type:none;
+}
+
+.bt-content ul li {
+border-bottom:solid #cccccc 1px;
+padding-bottom:4px;
+padding-top:4px;
+}
+
+div.calendar_tooltips-field_event_date_value-value {
+	float:left;
+	margin-right:4px;
+}
+
+#content .pane-my-calendar div.calendar-calendar .week-view,
+#content .pane-my-calendar div.calendar-calendar .month-view
+  {
+max-height:300px;
+overflow:auto;
+}
+
+* html #content .pane-my-calendar div.calendar-calendar .week-view,
+* html #content .pane-my-calendar div.calendar-calendar .month-view
+ { 
+   height: expression( this.scrollHeight > 399 ? "400px" : "auto" ); /* sets max-height for IE */
+}
+
+
+.view-id-og td.views-field-title img, .view-id-og_my td.views-field-title img {
+  float:left;
+  margin-right:4px;
+}
+.view-id-og td, .view-id-og_my td {
+vertical-align:middle;
+height: 24px;
+}
+
+#header, #header-bar {
+	height:inherit;
+}
+#logo-title {
+	padding: 0 0 20px 0;
+}
+
+div.pane-flash-article {
+border:red solid 3px;
+padding: 0px;
+float:left;
+width:100%;
+}
+div.pane-flash-article>h2 {
+background:#ff0000;
+color:#ffffff;
+padding:6px;
+margin:0;
+}
+div.pane-flash-article>div.pane-content,
+div.pane-lead-articles>div.pane-content
+ {
+padding:6px 6px 6px 0;
+float:left;
+width:100%;
+}
+
+div.pane-cm-frontpage > div.pane-content {
+/*float:left;*/
+padding-right:20px;
+}
+
+
+.view-flash-article .views-row,
+.view-cm-frontpage  .views-row,
+.view-lead-articles .views-row {
+  float:left;
+}
+.panel-separator {
+/*clear:both;*/
+}
+
+/*
+.views-field-teaser {
+float:left;
+width:100%;
+}
+*/
+.one-sidebar #content-inner {
+float:right;
+width:100%;
+}
+
+.views-slideshow-controls-bottom {
+margin-top:4px;
+}
+
+div.views_slideshow_singleframe_main {
+  border:2px solid #cccccc;
+  padding:6px;
+}
+.pager-item.activeSlide a {
+background-color: #cccccc;
+color:#ffffff;
+}
+.pager-item a {
+padding: 3px 5px;
+}
+
+div.krumo-root {
+position:absolute;
+z-index:999;
+}
+
+.view-feeds-data-classifieds-import .views-field-description span.field-content {
+font-size:0.8em;
+height:auto;
+line-height:auto;
+margin-left:8px;
+margin-top:4px;
+overflow:auto;
+white-space:normal;
+}
+
+.item-list ul li .views-field-description .field-content a {
+  margin:0;
+  padding:0;
+  height:auto;
+  display:inline;
+}
+
+pre {
+white-space:inherit;
+}
+
+#header .form-submit {
+background:url("../tma/tma/images/submit.png") no-repeat scroll 0 50% transparent;
+border:0 none;
+color:#FFFFFF;
+float:left;
+font:bold 0.9em arial,sans-serif;
+height:24px;
+margin:0 0 0 5px;
+padding:0;
+width:65px;
+}
+
+#block-user-0 #user-login-form input.form-text {
+border:1px solid #AAAAAA;
+padding:1px;
+width:80px;
+}
+
+html.js #block-user-0 .item-list, #block-user-0 .item-list {
+float:left;
+margin:-5px 0 0;
+padding:0;
+text-align:left;
+width:auto;
+}
+
+html.js #block-user-0 #user-login-form input.form-submit, #block-user-0 #user-login-form input.form-submit {
+clear:none;
+float:right;
+margin:0px 0 0;
+}
+
+html.js #block-user-0 #user-login-form label {
+color:#4E4E4E;
+font-size:85%;
+font-weight:normal;
+margin-left:7px;
+position:absolute;
+text-align:left;
+top:18px;
+}
+
+#primary a, #secondary a {
+padding:0 0.7em;
+}
+a {
+color:#6699cc;
+}
+
+.panel-2col-stacked .panel-col-first {
+width:60%;
+}
+.panel-2col-stacked .panel-col-last {
+width:39.9%;
+}
+
+div#content-float {
+ float:right;
+ width:200px;
+ margin-left:6px;
+ margin-bottom:3px;
+}
+
+#AD_ROW.AD a {
+margin:10px;
+}
+
+.views-exposed-form .views-exposed-widget .form-submit {
+margin-top:0;
+}
+.views-exposed-form .views-exposed-widget .form-item {
+float:left;
+}
+
+.date-views-filter-wrapper  {
+min-width:inherit;
+}
+
+table {
+width:100%;
+border:none;
+}
+
+fieldset, div.view-filters {
+border:1px solid #DADADA;
+margin:1em 0;
+padding:0.5em;
+}
+
+td, th {
+border:none;
+background:transparent;
+}
+
+.fields-action-row>td, .fields-action-row>th {
+vertical-align:middle;
+}
+
+tr.even, tr.odd {
+background-color:transparent;
+}
+
+td.active {
+background-color:transparent;
+}
+
+.view-id-cm_frontpage .view-header {
+position:relative;
+right:0;
+
+}
+
+div.create-group-info {
+border:1px solid #E5502A;
+background-color:#D7D9DA;
+color:#E5502A;
+font-weight:bold;
+padding:6px;
+margin-bottom:6px;
+}
+
+div.pane-og-my {
+float:left;
+width:29.9%;
+}
+
+div.pane-my-channels-activity {
+float:left;
+width:70%;
+}
+td.views-field-created {
+white-space:nowrap;
+}
+
+div.views-field-post-count-new {
+display:inline;
+}
+
+div#sponsor-ad {
+position:absolute;
+right:5px;
+top:5px;
+}
+
+#use_site_block li {
+	color:#6699CC;
+	cursor:pointer;
+	list-style-type:none;
+}
+
+#use_site_block .note {
+	font-style:italic;
+	font-size:.8em;
+}
+
+h2.pane-title {
+margin-top:0;
+}

@@ -1,0 +1,33 @@
+<?php
+// $Id: wwsgd.install,v 1.1.2.1 2009/12/06 06:27:23 richard Exp $
+
+function wwsgd_schema() {
+  $schema['wwsgd_visits'] = array(
+    'description' => t('How many times a person has visited the site.'),
+    'fields' => array(
+       'sid' => array(
+         'description' => t('Session ID, mapped to the one the Session API module sets'),
+         'type' => 'int', 
+         'unsigned' => TRUE,
+         'not null' => TRUE,
+       ),
+       'visits' => array(
+         'description' => t('The number of visits to the site. This will change to mean views of a block with the associated bid'),
+         'type' => 'int',
+         'unsigned' => TRUE,
+         'not null' => TRUE,
+       ),
+       'bid' => array(
+         'description' => t('Block ID viewed by this session. Unused until http://drupal.org/node/300909 Unlimited number of blocks is resolved'),
+         'type' => 'int',
+         'unsigned' => TRUE,
+         'not null' => TRUE,
+       ),
+    ),
+  );
+  return $schema;
+}
+
+function wwsgd_install() {
+  drupal_install_schema('wwsgd');
+}

@@ -1,0 +1,11 @@
+; $Id $
+name = What Would Seth Godin Do?
+description = "Shows a link to the site's RSS feed if someone is a new visitor to the site."
+core = 6.x
+
+; Information added by drupal.org packaging script on 2010-05-10
+version = "6.x-1.0"
+core = "6.x"
+project = "wwsgd"
+datestamp = "1273527612"
+

@@ -1,0 +1,59 @@
+<?php
+  /**
+   * Implementation of hook_form_alter().
+   *
+   * The function is named modulename_form_alter.
+   */
+  function zzwb_custom_form_alter(&$form, $form_state, $form_id) {
+    // Normally a switch is used because you may want to alter more than
+    // one form and it is easy to add a new case for each form.
+//dpm($form_id);
+    switch ($form_id) {
+      // This is our form ID.
+      case 'views_bulk_operations_form__1':
+        // Our kickin' mods go here.
+       unset($form['do']['#options'][1]);
+       if(is_array($form['taxonomy'])) {
+       $taxonomykeys = array_keys($form['taxonomy']);
+       foreach($taxonomykeys as $taxonomykey) {
+         if($taxonomykey<>9 && $taxonomykey<>6 && substr_compare($taxonomykey, "#", 0, 1)) { 
+           unset($form['taxonomy'][$taxonomykey]);
+           }
+       }
+       }
+         // if the user is does not have administer nodes permission, do not allow
+         // them to change/add audiences beyond the current group
+       case 'article_node_form':
+          if(!user_access('administer nodes') & isset($form['og_nodeapi']['visible']['og_groups']['#options'])) {
+            foreach($form['og_nodeapi']['visible']['og_groups']['#options'] as $key => $group) {
+             if (!isset($form['og_initial_groups']['#value'][$key])) {
+                 unset($form['og_nodeapi']['visible']['og_groups']['#options'][$key]);
+             }
+            }
+         }
+          // we don't want users without administer_nodes permission to
+          // be able to set the "share" tag on feeds
+       case 'rss_persistent_node_form':
+           if(!user_access('administer nodes')) {
+                 unset($form['taxonomy']['6']);
+             }
+       case 'feed_ical_node_form':
+          if(!user_access('administer nodes')) {
+                 unset($form['taxonomy']['6']);
+             }
+             
+       case 'feed_rss_node_form':
+           if(!user_access('administer nodes')) {
+                 unset($form['taxonomy']['6']);
+             }
+       	
+             
+
+             case 'user_login_block':
+
+
+      break;
+    }
+  }
+  
+?>

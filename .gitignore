@@ -1,0 +1,6 @@
+sites/default/files/*
+settings.php
+.htaccess
+/*.buildpath
+/*.project
+/.settings/

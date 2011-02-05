@@ -1,0 +1,36 @@
+; $Id$
+
+  ; The name and description of the theme used on the admin/build/themes page.
+name        = 960 Grid System - Williamstown Beat
+description = A variant of The 960 grid theme
+
+  ; The screenshot used on the admin/build/themes page.
+; screenshot = screenshot.png
+
+  ; "core" specifies the version of Drupal that this theme is compatible with.
+  ; The "engine" field is not used in a
+  ; sub-theme since the engine is inherited from its base theme.
+core       = 6.x
+base theme = ninesixty
+
+; Regions
+regions[left]           = left sidebar
+regions[right]          = right sidebar
+regions[sidebar_top] = above sidebar
+regions[navbar]         = navigation bar
+regions[topbanner_image]         = banner image
+regions[content_top]    = content top
+regions[content_bottom] = content bottom
+regions[header_right]         = header right
+regions[footer]         = footer
+regions[closure_region] = closure
+regions[local_tasks] = local_tasks
+
+
+; Stylesheets
+  ; stylesheets[all][]   = system.css
+stylesheets[all][]   = ninesixty_wb.css
+
+; neither of these two attempts to turn off debug styles worked, I ended up renaming the 960-debug.css to 960-debug.css-disabled
+css remove[] = 960-debug.css
+settings[960 debug] = 0

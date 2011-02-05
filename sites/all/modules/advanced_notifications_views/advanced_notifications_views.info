@@ -1,0 +1,10 @@
+; $Id
+name = Advanced Notifications Views
+description = Advanced Views integration for Notifications.
+dependencies[] = views
+dependencies[] = notifications
+package = Notifications
+core = 6.x
+version = "6.x-1.0"
+core = "6.x"
+project = "advanced_notifications_views"

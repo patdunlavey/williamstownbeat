@@ -1,0 +1,36 @@
+<?php
+// $Id: disemvowel.install,v 1.1 2010/01/17 20:18:21 davereid Exp $
+
+/**
+ * Implements hook_schema_alter().
+ */
+function disemvowel_schema_alter(&$schema) {
+  $schema['comments']['fields']['disemvowel'] = array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'A boolean if the comment should be disemvoweled.',
+  );
+}
+
+/**
+ * Implements hook_install().
+ */
+function disemvowel_install() {
+  $ret = array();
+  $field = array(
+    'type' => 'int',
+    'not null' => TRUE,
+    'default' => 0,
+    'description' => 'A boolean if the comment should be disemvoweled.',
+  );
+  db_add_field($ret, 'comments', 'disemvowel', $field);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function disemvowel_uninstall() {
+  $ret = array();
+  db_drop_field($ret, 'comments', 'disemvowel');
+}

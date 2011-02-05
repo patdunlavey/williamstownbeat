@@ -1,0 +1,17 @@
+<?php
+// $Id$
+
+/**
+ * @file
+ * Advanced Views integration for Notifications.
+ * 
+ */
+
+/**
+ * Implementation of hook_views_api().
+ */
+function advanced_notifications_views_views_api() {
+  return array(
+    'api' => 2,
+  );
+}

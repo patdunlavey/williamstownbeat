@@ -1,0 +1,86 @@
+html.js #block-user-0,
+#block-user-0 {
+display: block;
+/*height: 4em;*/
+margin: 0;
+padding: 0;
+position: relative;
+width: 370px;
+}
+#block-user-0 {
+/*height: 6em;
+margin-top: -35px;*/
+}
+#block-user-0 .content {
+padding: 0;
+margin: -10px 0 0 0;
+}
+#block-user-0 h2.title {
+display: none;
+}
+#block-user-0 #edit-pass-wrapper {
+display: block;
+float: left;
+margin-left: 10px;
+margin-right: 10px;
+}
+#block-user-0 #user-login-form {
+margin: 0;
+padding: 0;
+}
+html.js #block-user-0 #user-login-form label {
+color: #4e4e4e;
+font-size: 85%;
+font-weight: normal;
+margin-left: 7px;
+position: absolute;
+text-align: left;
+bottom:-4.5em;
+}
+#block-user-0 #user-login-form label {
+position: static;
+margin-left: 2px;
+text-align: left;
+}
+#block-user-0 #user-login-form input.form-text {
+border: 1px solid #aaa;
+padding: 1px;
+width: 90px;
+}
+#block-user-0 #edit-name-wrapper {
+display: block;
+float: left;
+}
+html.js #block-user-0 #user-login-form input.form-submit,
+#block-user-0 #user-login-form input.form-submit {
+clear: none;
+float: right;
+margin: 12px 0 0 0;
+}
+#block-user-0 #user-login-form input.form-submit {
+clear: none;
+margin: 30px 0 0 0;
+}
+html.js #block-user-0 .item-list,
+#block-user-0 .item-list {
+float: none;
+margin: 2px 0 -15px 0;
+padding: 5px 0 0 0;
+text-align: left;
+width: auto;
+}
+#block-user-0 .item-list {
+float: right;
+margin: -17px 105px -15px 0;
+}
+#block-user-0 .item-list ul {
+margin: 0;
+padding: 0;
+}
+#block-user-0 .item-list li {
+margin: 0;
+padding: 0 0 0 0px;
+list-style: none;
+font-size: 77%;
+}
+

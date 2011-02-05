@@ -1,0 +1,181 @@
+<?php
+// $Id: disemvowel.module,v 1.1 2010/01/17 20:18:21 davereid Exp $
+
+/**
+ * Implements hook_menu().
+ */
+function disemvowel_menu() {
+  $items['disemvowel/%comment'] = array(
+  );
+  //return $items;
+}
+
+function disemvowel_is_comment_disemvoweled(&$comment) {
+  if (!isset($comment->disemvowel)) {
+    $comment->disemvowel = (int) db_result(db_query("SELECT disemvowel FROM {comments} WHERE cid = %d", $comment->cid));
+  }
+  return $comment->disemvowel;
+}
+
+/**
+ * Implements hook_perm().
+ */
+function disemvowel_perm() {
+  return array('disemvowel comments');
+}
+
+/**
+ * Implements hook_form_FORM_ID_alter().
+ */
+function disemvowel_form_fasttoggle_settings_form_alter(&$form, $form_state) {
+  $form['comments']['fasttoggle_comment_settings']['#options']['disemvowel'] = t('Disemvowel/Un-disemvowel');
+}
+
+/**
+ * Implements hook_fasttoggle_options().
+ */
+function disemvowel_fasttoggle_options($type, $obj = NULL) {
+  $return = array();
+
+  switch ($type) {
+    case 'comment': // $obj = comment
+      // Get an array with all enabled fast toggle links
+      $settings = variable_get('fasttoggle_comment_settings', array('disemvowel' => FALSE));
+
+      if ($settings['disemvowel'] && (user_access('administer comments') || user_access('moderate comments') || user_access('disemvowel comments'))) {
+        $return['disemvowel'] = _fasttoggle_get_label('comment_disemvowel');
+      }
+      break;
+  }
+
+  return $return;
+}
+
+/**
+ * Implements hook_fasttoggle_labels().
+ */
+function disemvowel_fasttoggle_labels($style) {
+  switch ($style) {
+    case FASTTOGGLE_LABEL_ACTION:
+      $labels = array(
+        'comment_disemvowel' => array(0 => t('un-disemvowel'), 1 => t('disemvowel')),
+      );
+      break;
+    default:
+      $labels = array(
+        'comment_disemvowel' => array(0 => t('disemvowel'), 1 => t('un-disemvowel')),
+      );
+      break;
+  }
+  return $labels;
+}
+
+/**
+ * Implements hook_fasttoggle_toggle().
+ */
+function disemvowel_fasttoggle_toggle($type, $object, $option) {
+  if ($type == 'comment' && $option == 'disemvowel') {
+    db_query("UPDATE {comments} SET disemvowel = %d WHERE cid = %d", $object->disemvowel, $object->cid);
+  }
+}
+
+/**
+ * Implements hook_comment().
+ */
+function disemvowel_comment(&$comment, $op) {
+  if ($op == 'view' && disemvowel_is_comment_disemvoweled($comment)) {
+    $comment->subject = disemvowel_filter('process', 0, -1, $comment->subject);
+    $comment->comment = disemvowel_filter('process', 0, -1, $comment->comment);
+  }
+  elseif ($op == 'load' && !isset($comment->disemvowel)) {
+    $comment->disemvowel = (int) db_result(db_query("SELECT disemvowel FROM {comments} WHERE cid = %d", $comment->cid));
+  }
+}
+
+/**
+ * Implements hook_link().
+ */
+/*function disemvowel_link($type, $object, $teaser = FALSE) {
+  $links = array();
+
+  if ($type == 'comment' && user_access('disemvowel comments')) {
+    $links['disemvowel'] = array(
+      'title' => disemvowel_is_comment_disemvoweled($object) ? t('Re-emvowel') : t('Disemvowel'),
+      'href' => 'disemvowel/' . $object->cid,
+      'query' => drupal_get_destination(),
+    );
+  }
+
+  return $links;
+}*/
+
+/**
+ * Implements hook_filter().
+ */
+function disemvowel_filter($op, $delta = 0, $format = -1, $text = '', $cache_id = 0) {
+  switch ($op) {
+    case 'list':
+      return array(0 => t('Disemvowel filter'));
+
+    case 'description':
+      return t('Removes vowels.');
+
+    case "process":
+      dpm($text);
+      $text = preg_replace('/[aeiou]+|(?!\b)[y]+/i', '', $text);
+      return $text;
+
+    default:
+      return $text;
+  }
+}
+
+/**
+ * Implements hook_action_info().
+ */
+function disemvowel_action_info() {
+  return array(
+    'disemvowel_comment_disemvowel' => array(
+      'description' => t('Disemvowel comment'),
+      'type' => 'comment',
+      'configurable' => FALSE,
+      'hooks' => array(
+        'comment' => array('insert', 'update'),
+      )
+    ),
+    'disemvowel_comment_emvowel' => array(
+      'description' => t('Emvowel comment'),
+      'type' => 'comment',
+      'configurable' => FALSE,
+      'hooks' => array(
+        'comment' => array('insert', 'update'),
+      )
+    ),
+  );
+}
+
+function disemvowel_comment_disemvowel($comment, $context = array()) {
+  if (isset($comment->cid)) {
+    $cid = $comment->cid;
+    $subject = $comment->subject;
+  }
+  else {
+    $cid = $context['cid'];
+    $subject = db_result(db_query("SELECT subject FROM {comments} WHERE cid = %d", $cid));
+  }
+  db_query('UPDATE {comments} SET disemvowel = %d WHERE cid = %d', 0, $cid);
+  watchdog('disemvowel', 'Disemvoweled comment %subject.', array('%subject' => $subject));
+}
+
+function disemvowel_comment_emvowel($comment, $context = array()) {
+  if (isset($comment->cid)) {
+    $cid = $comment->cid;
+    $subject = $comment->subject;
+  }
+  else {
+    $cid = $context['cid'];
+    $subject = db_result(db_query("SELECT subject FROM {comments} WHERE cid = %d", $cid));
+  }
+  db_query('UPDATE {comments} SET disemvowel = %d WHERE cid = %d', 1, $cid);
+  watchdog('disemvowel', 'Emvoweled comment %subject.', array('%subject' => $subject));
+}

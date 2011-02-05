@@ -1,0 +1,8 @@
+; $Id:$
+name = "Custom Views Bulk Operations Taxonomy Form Alter"
+description = "remove unwanted vocabularies from vbo"
+package = "Custom"
+core = 6.x
+
+version = "6.x-dev"
+core = "6.x"

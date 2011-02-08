@@ -16,7 +16,7 @@
   <div id="page" class="container-16 clearfix">
 
     <div id="site-header" class="clearfix">
-      <div id="branding" class="grid-9">
+      <div id="branding" class="grid-10">
       <div id="logo-name" class="clearfix">
       <?php if ($linked_logo_img): ?>
         <span id="logo" class=""><?php print $linked_logo_img; ?></span>
@@ -24,13 +24,16 @@
       <?php if ($linked_site_name): ?>
         <div id="site-name" class=""><?php print $linked_site_name; ?></div>
       <?php endif; ?>
-      <?php if ($site_slogan): ?>
-        <div id="site-slogan" class=""><?php print $site_slogan; ?></div>
-      <?php endif; ?>
+      <?php // if ($site_slogan): ?>
+        <div id="site-slogan" class="">
+        <?php // print $site_slogan; ?>
+        <a href="/cmi">A Citizen/Media Community Hub</a>
+        </div>
+      <?php // endif; ?>
       </div><!-- logo-name -->
       </div><!-- branding -->
 
-<div id="header-right" class="grid-7 clearfix">
+<div id="header-right" class="grid-6 clearfix">
     <?php if ($search_box): ?>
       <div id="search-box" class="clearfix"><?php print $search_box; ?></div>
       <div class="clear"></div>

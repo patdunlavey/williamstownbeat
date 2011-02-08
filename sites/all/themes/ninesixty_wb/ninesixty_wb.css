@@ -36,6 +36,9 @@ float:left;
 width:39.9%;
 }
 
+/** Layout hack to get 140px sidebar **/
+.container-16 .grid-13 {width:780px;}
+.container-16 .grid-3 {width:140px}
 
 
 /** Global styles **/
@@ -88,7 +91,7 @@ a:hover {
 }	
   #page
   {
-  padding-top:30px;
+  padding-top:0px;
   background-color:#ffffff;
   }
 
@@ -146,11 +149,11 @@ border-top:none;
 
 /** branding styles **/
 div#site-name {
-font-size:3em;
-font-family:Georgia;
-font-weight:bold;
+    font-family: Georgia;
+    font-size: 3em;
+    font-weight: bold;
+    margin-bottom: -0.3em;
 }
-
 #site-name a {
 color:#000000;
 }
@@ -164,7 +167,6 @@ text-decoration:none;
 #site-slogan {
 border-top:1px solid #CCCCCC;
 color:#666666;
-padding-top:6px;
 font-weight:400;
 font-size:0.7em;
 letter-spacing:0.2em;
@@ -196,19 +198,30 @@ height:17px;
 margin:-1px 0 0;
 padding:5px;
 	*/
-	width:292px;
+	width:200px;
 }
+.block-ajax_register {
+	margin-bottom:0;
+	}
+#block-menu-menu-editors-links {
+	margin-bottom:0px;
+	float:right;
+	}
 #header-right .form-submit {
 background:url("images/submit.png") no-repeat scroll 0 50% transparent;
 border:0 none;
 color:#FFFFFF;
-float:left;
-float:right;
 font:bold 0.9em arial,sans-serif;
 height:24px;
 margin:0 0 0 5px;
 padding:0;
 width:65px;
+}
+
+#edit-search-theme-form-1-wrapper {
+}
+#search.container-inline {
+	text-align:right;
 }
 span#welcomeuser {
 font-style:italic;
@@ -228,17 +241,50 @@ padding:0;
 float:left;
 margin:0 0.8em 0 0;
 }
-#header-right-links li a {
+#header-right-links, #header-right-links a {
+    color: #000000;
+    font-size: 0.9em;
+    font-weight: bold;
+    text-align: right;
+}
+#header-right-links a {
+	padding:0 0 0 1.5em;
+}
+#header-right-links li a  {
 background:none repeat scroll 0 0 transparent;
 border-width:0;
-color:#000000;
 display:block;
-font-size:1em;
-font-weight:bold;
 height:auto;
 margin:0;
-padding:0 1em 0 0;
 text-transform:none;
+}
+#header-right-links .leaf.first a {
+/*	padding-left:0;*/
+	}
+#site-header {
+    margin-bottom: 0.5em;
+    position: relative;
+    height:5em;
+}
+
+#branding, #header-right {
+position:absolute;
+}
+#branding {
+bottom:0;
+left:0;
+}
+#header-right {
+bottom:0px;
+right:0;
+}
+
+#block-menu-menu-editors-links {
+clear:both;
+}
+
+#TB_window {
+height: 454px;
 }
 
 /** login form **/
@@ -618,4 +664,13 @@ width:670px;
 
 .date-views-filter-wrapper  {
 min-width:inherit;
+}
+
+.node ol {
+list-style:decimal outside none;
+margin-left:20px;
+}
+.node ul {
+list-style:inherit;
+margin-left:20px;
 }

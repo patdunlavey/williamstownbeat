@@ -488,7 +488,7 @@ overflow:hidden;
 margin-top:4px;
 }
 
-div.views_slideshow_singleframe_main {
+.pane-lead-articles div.views_slideshow_singleframe_main {
   border:2px solid #cccccc;
   padding:6px;
 }
@@ -673,4 +673,14 @@ margin-left:20px;
 .node ul {
 list-style:inherit;
 margin-left:20px;
+}
+
+#topbanner {
+position:relative;
+}
+
+#topbanner #block-views-ad_full_banner-block_1.block {
+    position: absolute;
+    right: 5px;
+    top: 5px;
 }

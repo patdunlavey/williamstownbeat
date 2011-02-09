@@ -384,9 +384,9 @@ border-right:none;
 padding-left:6px;
 }
 
-/* not sure why this is needed... */
 .sidebar {
 	margin-top:5px;
+	font-size:80%;
 }
 
 /** views **/

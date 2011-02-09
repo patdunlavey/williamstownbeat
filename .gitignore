@@ -1,6 +1,14 @@
+<<<<<<< HEAD
+sites/default/files/css/*
+settings.php
+sites/default/files/backup_migrate/*
+sites/default/files/js/*
+
+=======
 sites/default/files/*
 settings.php
 .htaccess
 /*.buildpath
 /*.project
 /.settings/
+>>>>>>> origin/master

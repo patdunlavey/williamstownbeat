@@ -7,9 +7,9 @@
 function zzwb_custom_form_alter(&$form, $form_state, $form_id) {
     // Normally a switch is used because you may want to alter more than
     // one form and it is easy to add a new case for each form.
-//    dpm($form_id);
+    //    dpm($form_id);
     switch ($form_id) {
-         case 'views_bulk_operations_form__1':
+        case 'views_bulk_operations_form__1':
             unset($form['do']['#options'][1]);
             if(is_array($form['taxonomy'])) {
                 $taxonomykeys = array_keys($form['taxonomy']);
@@ -48,6 +48,9 @@ function zzwb_custom_form_alter(&$form, $form_state, $form_id) {
                 unset($form['taxonomy']['6']);
             }
             break;
+        case 'comment_form':
+            $form['#after_build'][] = 'zzwb_process_comment_form';
+            break;
         case 'user_login':
             break;
         case 'user_register':
@@ -56,5 +59,12 @@ function zzwb_custom_form_alter(&$form, $form_state, $form_id) {
             break;
     }
 }
+
+function zzwb_process_comment_form(&$form) {
+    $form['comment_filter']['format']['#type'] = 'hidden';
+    return $form;
+
+}
+
 
 ?>

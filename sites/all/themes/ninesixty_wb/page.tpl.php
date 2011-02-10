@@ -16,7 +16,7 @@
   <div id="page" class="container-16 clearfix">
 
     <div id="site-header" class="clearfix">
-      <div id="branding" class="grid-10">
+      <div id="branding" class="grid-9">
       <div id="logo-name" class="clearfix">
       <?php if ($linked_logo_img): ?>
         <span id="logo" class=""><?php print $linked_logo_img; ?></span>
@@ -33,7 +33,7 @@
       </div><!-- logo-name -->
       </div><!-- branding -->
 
-<div id="header-right" class="grid-6 clearfix">
+<div id="header-right" class="grid-7 clearfix">
     <?php if ($search_box): ?>
       <div id="search-box" class="clearfix"><?php print $search_box; ?></div>
       <div class="clear"></div>

@@ -66,5 +66,86 @@ function zzwb_process_comment_form(&$form) {
 
 }
 
+/**
+ * Implementation of hook_block().
+ */
+function zzwb_custom_block($op = 'list', $delta = 0, $edit = array()) {
+  if ($op == 'list') {
+    $blocks[0]['info'] = t('BeatBox Group details');
+    $blocks[0]['cache'] = BLOCK_NO_CACHE;
+
+    return $blocks;
+  }
+  elseif ($op == 'view') {
+    switch ($delta) {
+      case 0:
+        return bb_og_block_details();
+    }
+  }
+}
+
+
+function bb_og_block_details() {
+  global $user;
+
+  // Only display group details if we have a group context.
+  if (($node = og_get_group_context()) && node_access('view', $node)) {
+    list($txt, $subscription) = og_subscriber_count_link($node);
+    if ($subscription == 'active' || user_access('administer nodes')) {
+      $links = module_invoke_all('og_create_links', $node);
+      // We want to open this up for OG_INVITE_ONLY but we need to handle invitation workflow much better. See http://drupal.org/node/170332
+      if ($node->og_selective < OG_INVITE_ONLY) {
+        $links['invite'] = l(t('Invite friend'), "og/invite/$node->nid");
+      }
+      $links['subscribers'] = $txt;
+      $manager = user_load($node->uid);
+      if($manager->contact) {
+          // I want to get the themed username, but if it makes a link to the profile page, I want to remove that
+          $manager_link = strip_tags(theme('username', $node));
+          $manager_link = l($manager_link,'user/'.$node->uid.'/contact');
+          $links['manager'] = t('Manager: !name', array('!name' => $manager_link));
+      }
+      else {
+          $links['manager'] = t('Manager: !name', array('!name' => theme('username', $node)));
+      }
+      
+      // Site admins get a Join link if they are not yet subscribed.
+      $subscribe = isset($subscription) && og_is_group_member($node->nid, FALSE) ? l(t('My membership'), "og/manage/$node->nid") : og_subscribe_link($node);
+      if(isset($subscribe)) {
+        $links['my_membership'] = $subscribe;
+      }
+    }
+    elseif ($subscription == 'requested') {
+      $links['approval'] = t('Your membership request awaits approval.');
+      $links['delete'] = l(t('Delete request'), "og/unsubscribe/$node->nid/$user->uid", array('query' => 'destination=og'));
+    }
+    elseif (!$user->uid) {
+      $dest = drupal_get_destination();
+      if (variable_get('user_register', 1) == 0) {
+        $links['must_login'] = t('You must <a href="!login">login</a> in order to post into this group.', array('!login' => url("user/login", array('query' => $dest))));
+      }
+      else {
+        $links['must_login'] = t('You must <a href="!register">register</a> or <a href="!login">login</a> in order to post into this group.', array('!register' => url("user/register", array('query' => $dest)), '!login' => url("user/login", array('query' => $dest))));
+      }
+    }
+    elseif ($node->og_selective < OG_INVITE_ONLY) {
+      $links['subscribe'] = og_subscribe_link($node);
+    }
+    elseif ($node->og_selective == OG_INVITE_ONLY) {
+      $links['closed'] = t('This is an <em>invite only</em> group. The group administrators add/remove members as needed.');
+    }
+    elseif ($node->og_selective == OG_CLOSED) {
+      $links['closed'] = t('This is a <em>closed</em> group. The group administrators add/remove members as needed.');
+    }
+
+    // Modify these links by reference. If you want control of the whole block, see og_block_details().
+    drupal_alter('og_links', $links, $node);
+
+    $block['content'] = theme('item_list', $links);
+    $block['subject'] = l($node->title, "node/$node->nid");
+    return $block;
+  }
+}
+
 
 ?>

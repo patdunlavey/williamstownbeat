@@ -6,9 +6,9 @@ sites/default/files/js/*
 
 =======
 sites/default/files/*
-settings.php
 .htaccess
 /*.buildpath
 /*.project
 /.settings/
 >>>>>>> origin/master
+/sync-commands.txt

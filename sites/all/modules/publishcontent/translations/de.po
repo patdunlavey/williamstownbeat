@@ -1,4 +1,4 @@
-# $Id: de.po,v 1.1.2.1 2009/02/05 21:44:06 malaussene Exp $
+# $Id: de.po,v 1.1.2.2 2010/06/01 14:47:37 ambiguator Exp $
 #
 # LANGUAGE translation of Drupal (general)
 # Copyright 2009 malaussene
@@ -52,12 +52,12 @@ msgid "Display a link to publish the node."
 msgstr "Zeige einen Link zum Veröffentlichen der Node"
 
 #: publishcontent.module:67
-msgid "  publish *all* content"
-msgstr "  veröffentliche *alle* Inhalte"
+msgid "publish any content"
+msgstr "veröffentliche von Inhalte"
 
 #: publishcontent.module:68
-msgid "unpublish *all* content"
-msgstr "  verstecke *alle* Inhalte"
+msgid "unpublish any content"
+msgstr "verstecke von Inhalte"
 
 #: publishcontent.module:72
 msgid "node"

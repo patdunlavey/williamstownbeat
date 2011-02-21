@@ -6,9 +6,9 @@ dependencies[] = book
 core = 6.x
 
 
-; Information added by drupal.org packaging script on 2009-05-05
-version = "6.x-0.x-dev"
+; Information added by drupal.org packaging script on 2008-11-28
+version = "6.x-0.0-alpha2"
 core = "6.x"
 project = "outline"
-datestamp = "1241482956"
+datestamp = "1227875135"
 

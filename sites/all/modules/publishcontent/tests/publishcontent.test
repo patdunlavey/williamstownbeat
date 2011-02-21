@@ -1,5 +1,5 @@
 <?php
-// $Id: publishcontent.test,v 1.1.2.9 2009/01/21 04:31:37 malaussene Exp $
+// $Id: publishcontent.test,v 1.1.2.12 2010/07/01 19:52:14 ambiguator Exp $
 
 /**
  * @file
@@ -153,7 +153,7 @@ class PublishContentWebCaseTest extends DrupalWebTestCase {
 
   function testDoPublishByNodeOwner() {
     $type = 'page';
-    $web_user = $this->drupalCreateUser(array('  publish '. $type .' content'));
+    $web_user = $this->drupalCreateUser(array('publish any '. $type .' content'));
     $this->drupalLogin($web_user);
 
     $node = $this->drupalCreateNode(
@@ -169,7 +169,7 @@ class PublishContentWebCaseTest extends DrupalWebTestCase {
 
   function testDoUnpublishByNodeOwner() {
     $type = 'page';
-    $web_user = $this->drupalCreateUser(array('unpublish '. $type .' content'));
+    $web_user = $this->drupalCreateUser(array('unpublish any '. $type .' content'));
     $this->drupalLogin($web_user);
 
     $node = $this->drupalCreateNode(
@@ -193,19 +193,19 @@ class PublishContentWebCaseTest extends DrupalWebTestCase {
       )
     );
 
-    $this->drupalLogin($this->drupalCreateUser(array('  publish '. $type .' content')));
+    $this->drupalLogin($this->drupalCreateUser(array('publish any '. $type .' content')));
     $this->assert_current_user_can_publish_node($node);
     $this->assert_current_user_cannot_unpublish_node($node);
 
-    $this->drupalLogin($this->drupalCreateUser(array('unpublish '. $type .' content')));
+    $this->drupalLogin($this->drupalCreateUser(array('unpublish any '. $type .' content')));
     $this->assert_current_user_cannot_publish_node($node);
     $this->assert_current_user_can_unpublish_node($node);
 
-    $this->drupalLogin($this->drupalCreateUser(array('  publish *all* content')));
+    $this->drupalLogin($this->drupalCreateUser(array('publish any content')));
     $this->assert_current_user_can_publish_node($node);
     $this->assert_current_user_cannot_unpublish_node($node);
 
-    $this->drupalLogin($this->drupalCreateUser(array('unpublish *all* content')));
+    $this->drupalLogin($this->drupalCreateUser(array('unpublish any content')));
     $this->assert_current_user_cannot_publish_node($node);
     $this->assert_current_user_can_unpublish_node($node);
   }

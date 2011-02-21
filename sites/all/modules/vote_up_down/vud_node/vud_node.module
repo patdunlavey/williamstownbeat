@@ -1,5 +1,5 @@
 <?php
-// $Id: vud_node.module,v 1.1.2.43 2010/08/02 05:14:51 marvil07 Exp $
+// $Id: vud_node.module,v 1.1.2.44 2010/08/18 14:25:17 marvil07 Exp $
 
 /**
  * @file
@@ -285,7 +285,7 @@ function vud_node_link($type, $object, $teaser = FALSE) {
           break;
       }
       if ($node_type && variable_get('vud_node_reset', 0) && user_access('reset vote up/down votes')) {
-        $tag = variable_get('vote_up_down_tag', 'vote');
+        $tag = variable_get('vud_tag', 'vote');
         $criteria = array(
           'content_type' => $type,
           'content_id' => $node->nid,

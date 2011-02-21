@@ -1,5 +1,5 @@
 <?php
-// $Id: publishcontent_views_handler_field_node_link.inc,v 1.1.2.5 2009/05/18 04:29:48 malaussene Exp $
+// $Id: publishcontent_views_handler_field_node_link.inc,v 1.1.2.7 2010/07/01 19:52:14 ambiguator Exp $
 
 /**
  * Field handler to present a link node publish.

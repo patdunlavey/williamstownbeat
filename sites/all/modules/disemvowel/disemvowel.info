@@ -4,9 +4,9 @@ description = Provides the disemvoweling technique to censor unwanted postings s
 core = 6.x
 dependencies[] = comment
 
-; Information added by drupal.org packaging script on 2010-07-11
+; Information added by drupal.org packaging script on 2010-08-05
 version = "6.x-1.x-dev"
 core = "6.x"
 project = "disemvowel"
-datestamp = "1278833955"
+datestamp = "1280966860"
 

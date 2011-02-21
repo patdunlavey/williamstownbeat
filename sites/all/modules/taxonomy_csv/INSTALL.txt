@@ -1,4 +1,4 @@
-/* $Id: INSTALL.txt,v 2.3.4.11 2010/05/29 15:57:19 danielkm Exp $ */
+/* $Id: INSTALL.txt,v 3.1.2.2 2010/08/20 07:12:45 danielkm Exp $ */
 
 
                       TAXONOMY CSV IMPORT/EXPORT
@@ -37,9 +37,7 @@
 
 -- CONFIGURATION --
   ---------------
-* Go to Administer > User management > Roles, then check depending on user:
-  - "administer taxonomy by csv"
-  - "export taxonomy by csv"
+* User need access rights to Drupal Taxonomy to use Taxonomy csv import/export.
 
 
 -- USAGE --

@@ -1,5 +1,5 @@
 <?php
-// $Id: fields.action.inc,v 1.1.2.30 2010/06/07 14:50:10 kratib Exp $
+// $Id: fields.action.inc,v 1.1.2.32 2010/07/17 15:30:47 kratib Exp $
 /**
  * @file Drupal action to set individual field values. 
  * 
@@ -15,6 +15,7 @@ function views_bulk_operations_fields_action_info() {
     'description' => t('Modify node fields'),
     'configurable' => TRUE,
     'behavior' => array('changes_node_property'),
+    'form properties' => array('#field_info'),
   ));
 }
 
@@ -152,7 +153,7 @@ function theme_views_bulk_operations_fields_action_form($form) {
   if (module_exists('token')) {
     $output .= t('<h3>Using tokens</h3>
                   In text fields, you can use the following tokens:
-                  <fieldset class="collapsed collapsible"><legend>Tokens</legend>!tokens</fieldset>', array('!tokens' => theme('token_help', 'node'))
+                  <fieldset class="collapsed collapsible"><legend>Available tokens</legend>!tokens</fieldset>', array('!tokens' => theme('token_help', 'node'))
     );
     drupal_add_js('misc/collapse.js');
   }
@@ -222,7 +223,7 @@ function views_bulk_operations_fields_action_validate($form, $form_state) {
       if (function_exists($function)) {
         $form['#node']->$field_name = $form_state['values'][$field_name];
         $items = isset($form['#node']->$field_name) ? $form['#node']->$field_name : array();
-        call_user_func($function, 'validate', $form['#node'], $field, $items, $form, NULL);
+        $function('validate', $form['#node'], $field, $items, $form, NULL);
         content_field('validate', $form['#node'], $field, $items, $form, NULL);
       }
     }

@@ -1,5 +1,5 @@
 <?php
-// $Id: outline.module,v 1.58 2009/05/04 21:35:56 cvsadmin Exp $
+// $Id: outline.module,v 1.52 2008/11/28 12:08:07 augustin Exp $
 
 /**
  * @file
@@ -93,17 +93,17 @@ function outline_form_alter(&$form, $form_state, $form_id) {
       $form['book']['bid']['#ahah']['path'] = 'outline/js/form';
       $form['book']['bid']['#ahah']['wrapper'] = 'outline-ahah-wrapper';
       // The weights are added to make sure the wrapper includes only and all what we want. 
-      $form['book']['plid']['#weight'] = 11; 
+      $form['book']['plid']['#weight'] = 11.1; 
 
       $form['book']['outline-ahah-wrapper-begin'] = array(
         '#value' => ' ',
         '#prefix' => '<div id="outline-ahah-wrapper">',
-        '#weight' => 10,
+        '#weight' => 11.0,
       );
       $form['book']['outline-ahah-wrapper-end'] = array(
         '#value' => ' ',
         '#suffix' => '</div>',
-        '#weight' => 12,
+        '#weight' => 11.3,
       );
       // Add our own form elements.
       $bid = isset($form['#node']->book['bid']) ? $form['#node']->book['bid'] : 0; 
@@ -172,16 +172,12 @@ function outline_link($type, $node = NULL, $teaser = FALSE) {
           elseif ('<default>' != $child_type_book_default) {
             $child_type = $child_type_book_default;
           }
-	  
-	  // Added by PD to provide compatibility with OG User Roles
-	 if (module_exists('og') && module_exists('og_user_roles') && $thegroup = og_get_group_context()) {
-	 $gidpath = '&gids[]='.$thegroup->nid;
-	 }
+
           if (node_access('create', $child_type) && 1 == $node->status && $node->book['depth'] < MENU_MAX_DEPTH) {
             $links['outline_add_child'] = array(
               'title' => t('Add child !node_type', array( '!node_type' => node_get_types('name', $child_type))),
               'href' => "node/add/". str_replace('_', '-', $child_type),
-              'query' => "parent=". $node->book['mlid'].$gidpath,
+              'query' => "parent=". $node->book['mlid'],
             );
           }
         }
@@ -307,7 +303,7 @@ function outline_nodeapi(&$node, $op, $teaser, $page) {
         if (!empty($node->book['bid']) && NODE_BUILD_NORMAL == $node->build_mode) {
           $node->content['outline_navigation'] = array(
             '#value' => theme('outline_navigation', $node),
-            '#weight' => -1,
+            '#weight' => 101,
           );
 
         }
@@ -639,11 +635,8 @@ function _outline_update_outline($node) {
     $b['toc_depth'] = isset($o['books'][$bid]['toc_depth']) ? $o['books'][$bid]['toc_depth'] : -1;
     $b['book_toc_depth'] = isset($o['books'][$bid]['default_toc_depth']) ? $o['books'][$bid]['default_toc_depth'] : -1;
   }
-  elseif (isset($node->book['outline'])) {
+  else {
     $b = $node->book['outline'];
-  }
-  else { // Nothing to do.
-    return;
   }
 
   // Update an existing page which is already outlined, and without making a new revision:
@@ -718,7 +711,7 @@ function outline_add_elements_form(&$form, $bid) {
     '#collapsible' => FALSE,
     '#collapsed' => FALSE,
     '#tree' => TRUE,
-    '#weight' => 11,
+    '#weight' => 11.2,
     '#access' =>   $access,
   );
 
@@ -811,6 +804,66 @@ function outline_add_elements_form(&$form, $bid) {
  * Form builder, for the admin setting pages (book and outline's).
  */
 function outline_admin_settings_form() {  
+  global $user;
+
+  $collapsed = TRUE;
+  $time = time();
+  $time_limit = $time - (60 * 60 * 24 * 30);
+  if (variable_get('outline_supported_' . $user->uid, 0) < $time_limit) {
+    $collapsed = FALSE;
+    variable_set('outline_supported_' . $user->uid, $time);
+  }
+
+  $form['outline_support_maintainers'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Support'),
+    '#collapsible' => TRUE,
+    '#collapsed' => $collapsed,
+    '#weight' => -1,
+  );
+
+
+  $form['outline_support_maintainers']['outline_support_text'] = array(
+    '#value' => '<p>'
+      . t("<strong>The outline module is charity-ware</strong>.") . '<br />'
+      . t("Please contribute back by supporting the charity work of the following web sites. ") . '<br />'
+      . t("None of the web sites listed here are for profit, and none of them carry advertising.") . '<br />'
+      . t("They are all <strong>web sites dedicated to creating a better tomorrow for the whole society</strong>.") . '<br />'
+      . '</p>'
+      . '<ul>'
+      . '<li>' . t('<a href="http://activistsolutions.org/">Activist Solutions</a>: harvesting grassroots power.') . '</li>'
+      . '<li>' . t('<a href="http://www.reuniting.info/">Reuniting</a>: healing with sexual relationships.') . '</li>'
+      . '<li>' . t('<a href="http://overshoot.tv/">Overshoot TV</a>: making high quality videos and documentaries promoting environmental and economical sustainability.') . '</li>'
+      . '<li>' . t('<a href="http://minguo.info/">Minguo.info</a>: promotting better voting systems, and an experiment in direct democracy.') . '</li>'
+      . '<li>' . t('<a href="http://www.wechange.org/">We Change</a>: because we live in a world of solutions...') . '</li>'
+      . '</ul>'
+      . '<p>'
+      . t("You can support those web sites in the following ways:") . '<br />'
+      . '</p>'
+      . '<ul>'
+      . '<li>' . t("Blog about them.") . '</li>'
+      . '<li>' . t("Put links in a block in a sidebar.") . '</li>'
+      . '<li>' . t("Put links in any other logical place in your web site, where your visitors will find the information useful.") . '</li>'
+      . '<li>' . t("Register and participate if they match your own interest!") . '</li>'
+      . '<li>' . t("We also appreciate if, on behalf of this maintainer,  you help <em>any charity of your choice</em>, or/and make a donation to them.") . '</li>'
+      . '</ul>'
+      . '<p>'
+      . t("Please, let the maintainer know about the options you chose.") . '<br />'
+      . '</p>'
+      . '<p>'
+      . t("Thank you for your support and cooperation.") . '<br />'
+      . '</p>',
+  );
+
+  $form['outline_support_maintainers']['outline_maintainers'] = array(
+    '#type' => 'markup',
+    '#value' => '<div style="border: solid 1px #eee; margin: .5em; padding: .5em;"> Module development sponsored by
+      <ul>
+      <li><a href="http://minguo.info/">minguo.info</a></li>
+      <li><a href="http://overshoot.tv/">Overshoot TV</a></li>
+      </ul></div>',
+  );
+
 
   $description = t('This value will be overriden by a per-book specific setting, if there is one.');
   $description .= t("This setting only makes a difference with outline's alternative navigation box.");
@@ -820,6 +873,24 @@ function outline_admin_settings_form() {
     '#description' => $description,
     '#default_value' => variable_get('toc_default_depth', 5),
     '#options' => drupal_map_assoc(array(1, 2, 3, 4, 5, 6, 7, 8, 9)),
+  );
+
+  $form['outline_support_websites'] = array(
+    '#type' => 'fieldset',
+    '#title' => t("Other charitable web sites..."),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  $form['outline_support_websites']['outline_support_other'] = array(
+    '#value' => '<p>'
+      . t("If your web site meets <em>all</em> the following criteria, you can ask for it to be listed here.")
+      . '</p>'
+      . '<ul>'
+      . '<li>' . t('It uses outline module.') . '</li>'
+      . '<li>' . t('It is a charity (registered or not) dedicated to creating a better society.') . '</li>'
+      . '<li>' . t('It is not for profit.') . '</li>'
+      . '<li>' . t('It does not carry any advertising (e.g. google ads).') . '</li>'
+      . '</ul>',
   );
 
   return $form;
@@ -943,12 +1014,6 @@ function outline_check_perm($node, $outline_action, $perm) {
   if (user_access('administer book outlines')) {
     $outline_action = TRUE;
   }
-  elseif ($node->uid == $user->uid) {
-    $outline_action = TRUE;
-  }
-//  elseif (  array_key_exists($user->uid, $node->coherent_access['editors']) ) {
-//    $outline_action = TRUE;
-//  }
   elseif ($node->outline['books'][$bid]['book_role_perm']) {
     $rids = array();
     foreach ($user->roles AS $rid => $role) {
@@ -1126,16 +1191,16 @@ function _outline_get_actual_toc_depth($node) {
 function outline_admin_overview() {
   $rows = array();
   foreach (book_get_books() as $book) {
-    $rows[] = array('data' => array(
-      l(t('edit'), 'node/' . $book['nid'] . '/edit'),
-      l(t('permissions'), 'admin/content/book/' . $book['nid'] . '/permission'),
-      l(t('outline'), 'admin/content/book/'. $book['nid']),
-      array('data' => l($book['title'], $book['href'], $book['options']), 'class' => 'book-title')
-    ));
+    $rows[] = array(
+      l($book['title'], $book['href'], $book['options']), 
+      l(t('edit permissions'), 'admin/content/book/' . $book['nid'] . '/permission')
+        . ' :: ' .
+      l(t('edit order and titles'), 'admin/content/book/'. $book['nid']) 
+    );
   }
-  $headers = array(array('data' => t('Operations'), 'colspan' => 3), array('data' => t('Book'), 'width' => '100%', 'class' => 'book-title'));
+  $headers = array(t('Book'), t('Operations'));
 
-  return theme('table', $headers, $rows, array('id' => 'outline-admin-overview'));
+  return theme('table', $headers, $rows);
 }
 
 /**

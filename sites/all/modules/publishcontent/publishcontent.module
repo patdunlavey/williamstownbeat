@@ -1,5 +1,5 @@
 <?php
-// $Id: publishcontent.module,v 1.3.4.11 2009/04/05 03:00:22 malaussene Exp $
+// $Id: publishcontent.module,v 1.3.4.18 2010/07/02 14:41:48 ambiguator Exp $
 
 /**
  * @file
@@ -43,16 +43,14 @@ function publishcontent_security_token_to_arg($arg, $map, $index) {
   return drupal_get_token();
 }
 
-function publishcontent_menu_alter(&$callbacks) {
-  $callbacks['node/%node']['access callback'] = '_publishcontent_view_access';
-  $callbacks['node/%node']['access arguments'] = array(1);
-}
-
+/**
+ * DEPRECATED: This function will be going away. publish_content_menu_alter was
+ * using this function. Leaving in place to avoid fatal errors due to outdated
+ * menu cache.
+ */
 function _publishcontent_view_access($node) {
-  return user_access('  publish *all* content') ||
-         user_access('unpublish *all* content') ||
-         user_access('  publish '. check_plain($node->type) .' content') ||
-         user_access('unpublish '. check_plain($node->type) .' content') ||
+  return user_access('un/publish '. check_plain($node->type) .' content') ||
+         user_access('un/publish *all* content') ||
          node_access('view', $node);
 }
 
@@ -62,38 +60,38 @@ function _publishcontent_publish_access($node, $token = FALSE) {
   }
 
   global $user;
-  return !$node->status && (user_access('  publish *all* content') ||
-                           (user_access('  publish own '. check_plain($node->type) .' content', $user) && $user->uid == $node->uid) ||
-                            user_access('  publish '. check_plain($node->type) .' content'));
+  return !$node->status && (user_access('publish any content') ||
+                           (user_access('publish own '. check_plain($node->type) .' content', $user) && $user->uid == $node->uid) ||
+                            user_access('publish any '. check_plain($node->type) .' content'));
 }
 function _publishcontent_unpublish_access($node, $token = FALSE) {
   if ($token && !drupal_valid_token($token)) {
     return FALSE;
   }
   global $user;
-  return $node->status && (user_access('unpublish *all* content') ||
+  return $node->status && (user_access('unpublish any content') ||
                           (user_access('unpublish own '. check_plain($node->type) .' content', $user) && $user->uid == $node->uid) ||
-                           user_access('unpublish '. check_plain($node->type) .' content'));
+                           user_access('unpublish any '. check_plain($node->type) .' content'));
 }
 
 /**
  * Implementation of hook_perm().
  *
  * @note: the 2 extra spaces is a hack: Drupal 5-6 user permissions page set
- *        'publish *all* content' auto-magically when 'unpublish *all* content'
+ *        'publish any content' auto-magically when 'unpublish any content'
  *        is set.
  */
 function publishcontent_perm() {
   $perms = array(
-    '  publish *all* content',
-    'unpublish *all* content',
+    'publish any content',
+    'unpublish any content',
   );
 
   foreach (node_get_types() as $type) {
     if (isset($type->type)) {
-      $perms[] = '  publish '. check_plain($type->type) .' content';
-      $perms[] = '  publish own '. check_plain($type->type) .' content';
-      $perms[] = 'unpublish '. check_plain($type->type) .' content';
+      $perms[] = 'publish any '. check_plain($type->type) .' content';
+      $perms[] = 'publish own '. check_plain($type->type) .' content';
+      $perms[] = 'unpublish any '. check_plain($type->type) .' content';
       $perms[] = 'unpublish own '. check_plain($type->type) .' content';
     }
   }
@@ -150,13 +148,25 @@ function publishcontent_views_handlers() {
  * allow to use the 'Publishing options' on the edit/add page
  */
 function publishcontent_form_alter(&$form, $form_state, $form_id) {
-  if (!user_access('administer nodes')
-      && $form['type']['#value'] .'_node_form' == $form_id
-      && (_publishcontent_unpublish_access($form['#node']) ||
-          _publishcontent_publish_access($form['#node']))) {
+  if (user_access('administer nodes')
+  || empty($form['type']['#value']) || empty($form['#node'])
+  || $form['type']['#value'] . '_node_form' != $form_id
+  || (!_publishcontent_unpublish_access($form['#node'])
+      && !_publishcontent_publish_access($form['#node']))) {
+     return;
+  }
+  $form['options']['status']['#access'] = TRUE;
+  if (!empty($form['options']['#access'])) {
+    return;
+  }
+  else {
     $form['options']['#access'] = TRUE;
-    unset($form['options']['promote']);
-    unset($form['options']['sticky']);
-    unset($form['options']['revision']);
+  }
+  foreach (element_children($form['options']) as $key) {
+    // If another form has afforded access to a particular option, do not
+    // override that access. Otherwise, disable it.
+    $form['options'][$key]['#access'] =
+     isset($form['options'][$key]['#access'])
+     ? $form['options'][$key]['#access'] : FALSE;
   }
 }

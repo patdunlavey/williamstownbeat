@@ -1,34 +1,28 @@
 <?php
-// $Id: imce_mkdir.module,v 1.1.2.1 2009/02/10 15:56:24 ufku Exp $
+// $Id: imce_mkdir.module,v 1.1.2.6 2010/10/09 06:15:46 ufku Exp $
 
 /**
- * Implementation of hook_form_alter().
+ * Implementation of hook_form_formID_alter().
  */
-function imce_mkdir_form_alter(&$form, &$form_state, $form_id) {
-  switch ($form_id) {
-
-    case 'imce_profile_form':
-      foreach (element_children($form['profile']['directories']) as $key) {
-        $form['profile']['directories'][$key]['mkdir'] = array(
-          '#type' => 'checkbox',
-          '#title' => t('Add subdirectories'),
-          '#default_value' => isset($form_state['profile']['directories'][$key]['mkdir']) ? $form_state['profile']['directories'][$key]['mkdir'] : 0,
-        );
-        $form['profile']['directories'][$key]['rmdir'] = array(
-          '#type' => 'checkbox',
-          '#title' => t('Remove subdirectories'),
-          '#default_value' => isset($form_state['profile']['directories'][$key]['rmdir']) ? $form_state['profile']['directories'][$key]['rmdir'] : 0,
-        );
-      }
-      $form['profile']['mkdirnum'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Maximum number of subdirectories'),
-        '#default_value' => $form_state['profile']['mkdirnum'],
-        '#description' => t('This setting is applicable only if you allow subdirectory creation under any of the predefined directories. Define here the maximum number of subdirectories a directory can have. Setting this to 0 removes the limit and also allows infinite subdirectory depth.'),
-      );
-      break;
-
+function imce_mkdir_form_imce_profile_form_alter(&$form, &$form_state) {
+  foreach (element_children($form['profile']['directories']) as $key) {
+    $form['profile']['directories'][$key]['mkdir'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Add subdirectories'),
+      '#default_value' => isset($form_state['profile']['directories'][$key]['mkdir']) ? $form_state['profile']['directories'][$key]['mkdir'] : 0,
+    );
+    $form['profile']['directories'][$key]['rmdir'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Remove subdirectories'),
+      '#default_value' => isset($form_state['profile']['directories'][$key]['rmdir']) ? $form_state['profile']['directories'][$key]['rmdir'] : 0,
+    );
   }
+  $form['profile']['mkdirnum'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Maximum number of subdirectories'),
+    '#default_value' =>  isset($form_state['profile']['mkdirnum']) ? $form_state['profile']['mkdirnum'] : 2,
+    '#description' => t('This setting is applicable only if you allow subdirectory creation under any of the predefined directories. Define here the maximum number of subdirectories a directory can have. Setting this to 0 removes the limit and also allows infinite subdirectory depth.'),
+  );
 }
 
 /**
@@ -47,7 +41,12 @@ function imce_mkdir_process_profile(&$imce) {
  */
 function imce_mkdir_content(&$imce) {
   if (!$imce['error'] && (imce_perm_exists($imce, 'mkdir') || imce_perm_exists($imce, 'rmdir'))) {
-    drupal_add_js(drupal_get_path('module', 'imce_mkdir') .'/imce_mkdir.js');
+    $path = drupal_get_path('module', 'imce_mkdir');
+    //CSS for IMCE 2.x
+    if (module_hook('imce', 'file_references')) {
+      drupal_add_css($path .'/imce_mkdir.css');
+    }
+    drupal_add_js($path .'/imce_mkdir.js');
     return drupal_get_form('imce_mkdir_form', array('imce' => &$imce));
   }
 }
@@ -143,12 +142,18 @@ function imce_mkdir_rmdir_batch(&$imce, $dirnames = array()) {
     $imce['dirremoved'] = array();
   }
   $parent = file_directory_path() . ($imce['dir'] == '.' ? '' : '/'. $imce['dir']);
+  $prefix = ($imce['dir'] == '.' ? '' : $imce['dir'] . '/');
 
   foreach ($dirnames as $dirname) {
     $index = array_search($dirname, $imce['subdirectories']);
 
     if ($index === FALSE) {
       drupal_set_message(t('Subdirectory %dir does not exist.', array('%dir' => $dirname)), 'error');
+      continue;
+    }
+
+    if (isset($imce['directories'][$prefix . $dirname])) {
+      drupal_set_message(t('Subdirectory %dir is a predefined directory and can not be removed.', array('%dir' => $dirname)), 'error');
       continue;
     }
 
@@ -167,6 +172,10 @@ function imce_mkdir_rmdir_batch(&$imce, $dirnames = array()) {
  * Recursive directory deletion
  */
 function imce_mkdir_rmdir_recursive($path) {
+  static $dirlen;
+  if (!isset($dirlen)) {
+    $dirlen = strlen(file_directory_path()) + 1;
+  }
   if (is_dir($path) && !is_link($path)) {
     if ($handle = @opendir($path)) {
       while (($file = readdir($handle)) !== FALSE) {
@@ -175,7 +184,8 @@ function imce_mkdir_rmdir_recursive($path) {
         }
         $filepath = $path .'/'. $file;
         if (!imce_mkdir_rmdir_recursive($filepath)) {
-          drupal_set_message(t('%path could not be removed.', array('%path' => $filepath)), 'error');
+          drupal_set_message(t('%path could not be removed.', array('%path' => substr($filepath, $dirlen))), 'error');
+          break;
         }
       }
       closedir($handle);
@@ -189,10 +199,35 @@ function imce_mkdir_rmdir_recursive($path) {
  * Delete a file in recursive directory deletion.
  */
 function imce_mkdir_unlink($filepath) {
-  if (!file_delete($filepath)) {
+
+  if (function_exists('imce_delete_filepath')) {
+    return imce_delete_filepath($filepath);
+  }
+
+  $file = db_fetch_object(db_query("SELECT * FROM {files} WHERE filepath = '%s'", $filepath));
+  //file exists in database
+  if ($file) {
+    //prevent imce returning ref count
+    $file->imce_noref = TRUE;
+    //check references
+    $refs = array_filter(module_invoke_all('file_references', $file));
+    //file is in use
+    if (!empty($refs)) {
+      drupal_set_message(t('%filename is in use by another application.', array('%filename' => $file->filename)), 'error');
+      return FALSE;
+    }
+    //prepare deletion
+    module_invoke_all('file_delete', $file);
+    if (!file_delete($file->filepath)) {
+      return FALSE;
+    }
+    db_query('DELETE FROM {files} WHERE fid = %d', $file->fid);
+  }
+  //not in db. probably loaded via ftp.
+  elseif (!file_delete($filepath)) {
     return FALSE;
   }
-  db_query("DELETE FROM {files} WHERE filepath = '%s'", $filepath);
+
   return TRUE;
 }
 

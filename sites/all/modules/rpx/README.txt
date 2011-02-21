@@ -1,4 +1,4 @@
-// $Id$
+// $Id: README.txt,v 1.1.2.4 2010/04/17 16:44:51 nrambeck Exp $
 
 Module: RPX
 Author: Peat Bakke <peat@janrain.com>, Nathan Rambeck <http://nathan.rambeck.org>, Rendahl Weishar <ren@janrain.com>

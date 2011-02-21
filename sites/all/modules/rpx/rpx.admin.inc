@@ -122,7 +122,7 @@ function rpx_admin_settings_form() {
         '#title' => 'Identity Providers',
         '#collapsible' => TRUE,
         '#collapsed' => FALSE,
-        '#description' => t('<a href="@setup_url" target="_blank">Configure/add providers here.</a> <a href="@update_url">Click here</a> to update your list of enabled providers from the RPX servers.', array('@update_url' => url('admin/settings/rpx', array('query' => 'update-providers')), '@setup_url' => variable_get('rpx_admin_url', '') .'/setup_guide_3'))
+        '#description' => t('<a href="@setup_url" target="_blank">Configure/add providers here.</a> <a href="@update_url">Click here</a> to update your list of enabled providers from the RPX servers.', array('@update_url' => url('admin/settings/rpx', array('query' => 'update-providers')), '@setup_url' => variable_get('rpx_admin_url', '') .'/setup_providers#steps'))
     );
     
     $form['providers']['list'] = array(
@@ -383,7 +383,7 @@ function rpx_profile_settings_form($form_state) {
 
 function _rpx_profile_field_options() {
   $options = array('' => '');
-  $result = db_query('SELECT fid, title, name FROM {profile_fields} WHERE type IN ("textfield", "textarea", "url") ORDER BY weight, title');
+  $result = db_query("SELECT fid, title, name FROM {profile_fields} WHERE type IN ('textfield', 'textarea', 'url') ORDER BY weight, title");
   while ($row = db_fetch_object($result)) {
     $options[$row->name] = $row->title;
   }

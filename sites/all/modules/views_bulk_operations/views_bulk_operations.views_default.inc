@@ -1,5 +1,5 @@
 <?php
-// $Id: views_bulk_operations.views_default.inc,v 1.1.2.9 2010/04/01 17:52:20 kratib Exp $
+// $Id: views_bulk_operations.views_default.inc,v 1.1.2.10 2010/09/29 19:26:22 kratib Exp $
 
 function views_bulk_operations_views_default_views() {
   // Admin content.
@@ -559,7 +559,8 @@ function views_bulk_operations_views_default_views() {
     ),
   ));
   $handler->override_option('access', array(
-    'type' => 'none',
+    'type' => 'perm',
+    'perm' => 'administer users',
   ));
   $handler->override_option('cache', array(
     'type' => 'none',

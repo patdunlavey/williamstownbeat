@@ -1,5 +1,5 @@
 <?php
-// $Id: vud.module,v 1.1.2.33 2010/08/02 05:14:51 marvil07 Exp $
+// $Id: vud.module,v 1.1.2.36 2010/11/01 04:57:25 marvil07 Exp $
 
 /**
  * @file
@@ -12,9 +12,12 @@ module_load_include('inc', 'vud', 'vud.theme');  // Include the theme.inc file.
  * Implementation of hook_init().
  */
 function vud_init() {
-  // Expire anonymous sessions early for Pressflow (30 minutes)
+  // Remove anonymous sessions which were previously set to prevent pressflow
+  // page caching. This will eventually clean up those sessions over time.
+  // @todo: remove in a future release when it can be reasonably expected that
+  // no more sessions with this variable exist in the wild.
   $now = time();
-  if (!empty($_SESSION['vud_timestamp']) && $now - $_SESSION['vud_timestamp'] > 60 * 30) {
+  if (!empty($_SESSION['vud_timestamp'])) {
     unset($_SESSION['vud_timestamp']);
   }
 }
@@ -25,7 +28,7 @@ function vud_init() {
 function vud_help($path, $arg) {
   switch ($path) {
     case 'admin/help#vud':
-      $output .= '<p>'. t('Provides a configurable up/down voting widget for other modules to use.') .'</p>';
+      $output = '<p>'. t('Provides a configurable up/down voting widget for other modules to use.') .'</p>';
       return $output;
   }
 }
@@ -157,7 +160,7 @@ function vud_user_votes() {
  * Callback to reset votes on an object.
  */
 function vud_reset($type, $content_id, $tag, $token) {
-  if (drupal_valid_token($token, "votereset/$type/$content_id/$tag")) {
+  if (drupal_valid_token($token, "votereset/$type/$content_id/$tag", TRUE)) {
     $uid = votingapi_current_user_identifier();
     $criteria = array(
       'content_type' => $type,
@@ -209,10 +212,29 @@ function vud_ctools_plugin_directory($module, $plugin) {
 
 /**
  * Implementation of votingapi hook_votingapi_results_alter().
+ *
+ * Add positive/negative aggregations for VotingAPI cache points.
  */
 function vud_votingapi_results_alter(&$cache, $content_type, $content_id) {
-  $vud_cache = _vud_get_standard_results($content_type, $content_id);
-  $cache = array_merge_recursive($cache, $vud_cache);
+  // positive points
+  $sql  = "SELECT SUM(v.value) as value_positives, v.tag ";
+  $sql .= "FROM {votingapi_vote} v ";
+  $sql .= "WHERE v.content_type = '%s' AND v.content_id = %d AND v.value_type = 'points' AND v.value > 0 ";
+  $sql .= "GROUP BY v.value_type, v.tag";
+  $result = db_query($sql, $content_type, $content_id);
+  while ($record = db_fetch_object($result)) {
+    $cache[$record->tag]['points']['positives'] = $record->value_positives;
+  }
+
+  // negative points
+  $sql  = "SELECT SUM(v.value) as value_negatives, v.tag ";
+  $sql .= "FROM {votingapi_vote} v ";
+  $sql .= "WHERE v.content_type = '%s' AND v.content_id = %d AND v.value_type = 'points' AND v.value < 0 ";
+  $sql .= "GROUP BY v.value_type, v.tag";
+  $result = db_query($sql, $content_type, $content_id);
+  while ($record = db_fetch_object($result)) {
+    $cache[$record->tag]['points']['negatives'] = $record->value_negatives;
+  }
 }
 
 /**
@@ -229,38 +251,4 @@ function vud_votingapi_metadata_alter(&$data) {
     'description' => t('The sum of all negative votes for a content.'),
     'module' => 'vud',
   );
-}
-
-/**
- * Calculate positive/negative results for VotingAPI cache.
- *
- * We provide 0 if not votes found.
- */
-function _vud_get_standard_results($content_type, $content_id) {
-  $cache = array();
-  $tag = variable_get('vud_tag', 'vote');
-
-  $sql  = "SELECT SUM(v.value) as value_positives ";
-  $sql .= "FROM {votingapi_vote} v ";
-  $sql .= "WHERE v.content_type = '%s' AND v.content_id = %d AND v.value_type = 'points' AND v.value > 0 ";
-  $sql .= "GROUP BY v.value_type, v.tag";
-  $value_positives = db_result(db_query($sql, $content_type, $content_id));
-
-  if ($value_positives === FALSE) {
-    $value_positives = 0;
-  }
-  $cache[$tag]['points']['positives'] = $value_positives;
-
-  $sql  = "SELECT SUM(v.value) as value_negatives ";
-  $sql .= "FROM {votingapi_vote} v ";
-  $sql .= "WHERE v.content_type = '%s' AND v.content_id = %d AND v.value_type = 'points' AND v.value < 0 ";
-  $sql .= "GROUP BY v.value_type, v.tag";
-  $value_negatives = db_result(db_query($sql, $content_type, $content_id));
-
-  if ($value_negatives === FALSE) {
-    $value_negatives = 0;
-  }
-  $cache[$tag]['points']['negatives'] = $value_negatives;
-
-  return $cache;
 }

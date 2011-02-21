@@ -1,5 +1,12 @@
 <?php
-// $Id: disemvowel.module,v 1.1 2010/01/17 20:18:21 davereid Exp $
+// $Id: disemvowel.module,v 1.2 2010/08/04 16:20:09 davereid Exp $
+
+/**
+ * Implements hook_perm().
+ */
+function disemvowel_perm() {
+  return array('disemvowel comments');
+}
 
 /**
  * Implements hook_menu().
@@ -18,17 +25,10 @@ function disemvowel_is_comment_disemvoweled(&$comment) {
 }
 
 /**
- * Implements hook_perm().
- */
-function disemvowel_perm() {
-  return array('disemvowel comments');
-}
-
-/**
  * Implements hook_form_FORM_ID_alter().
  */
 function disemvowel_form_fasttoggle_settings_form_alter(&$form, $form_state) {
-  $form['comments']['fasttoggle_comment_settings']['#options']['disemvowel'] = t('Disemvowel/Un-disemvowel');
+  $form['comments']['fasttoggle_comment_settings']['#options']['disemvowel'] = t('Disemvowel');
 }
 
 /**
@@ -121,7 +121,6 @@ function disemvowel_filter($op, $delta = 0, $format = -1, $text = '', $cache_id 
       return t('Removes vowels.');
 
     case "process":
-//      dpm($text);
       $text = preg_replace('/[aeiou]+|(?!\b)[y]+/i', '', $text);
       return $text;
 

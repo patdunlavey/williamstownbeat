@@ -1,11 +1,6 @@
-# $Id: CHANGELOG.txt,v 1.18 2008/11/30 01:49:19 augustin Exp $
+# $Id: CHANGELOG.txt,v 1.17 2008/11/28 12:19:23 augustin Exp $
 # CHANGELOG.txt for the outline.module
 ######################################
-
-30th November 2008
-==================
-* (#315186) Data synchronization when outline.module is enabled.
-  Added to the outline new books and new book pages that have been added by book.module while outline.module was disabled.
 
 # tag DRUPAL-6--0-0-ALPHA2 : 28th November 2008. 
 # ==============================================

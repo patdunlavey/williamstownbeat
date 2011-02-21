@@ -1,4 +1,4 @@
-/* $Id: updown.css,v 1.1.2.7 2010/03/12 08:06:45 marvil07 Exp $ */
+/* $Id: updown.css,v 1.1.2.9 2010/12/05 07:50:06 marvil07 Exp $ */
 
 .vud-widget-updown {
   width: 50px;
@@ -43,12 +43,12 @@
   font-size: 20px;
 }
 
-.vud-widget-updown .vud-link-up div {
+.vud-widget-updown div.updown-up {
   float: left;
   margin-right: 3px;
 }
 
-.vud-widget-updown .vud-link-down div {
+.vud-widget-updown div.updown-down {
   float: left;
   margin-left: 3px;
 }
@@ -86,4 +86,20 @@
 
 .vud-widget-updown .ctools-ajaxing div {
   display: none;
+}
+
+/**
+ * Hide elements visually, but keep them available for screen-readers.
+ *
+ * Used for information required for screen-reader users to understand and use
+ * the site where visual display is undesirable. Information provided in this
+ * manner should be kept concise, to avoid unnecessary burden on the user. Must
+ * not be used for focusable elements (such as links and form elements) as this
+ * causes issues for keyboard only or voice recognition users. "!important" is
+ * used to prevent unintentional overrides.
+ */
+.element-invisible {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
 }

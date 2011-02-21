@@ -1,4 +1,4 @@
-/* $Id: plain.css,v 1.1.2.6 2010/03/12 08:06:45 marvil07 Exp $  */
+/* $Id: plain.css,v 1.1.2.8 2010/11/11 09:28:47 marvil07 Exp $  */
 
 .vud-widget-plain {
   float: left;
@@ -18,6 +18,7 @@
   text-decoration: none;
   width: 15px;
   height: 16px;
+  background-image: url('arrows.png');
 }
 
 .vud-widget-plain a.up-inactive,
@@ -36,23 +37,23 @@
 
 .vud-widget-plain .up-active,
 .vud-widget-plain .up-inactive:hover {
-  background: url('a_up_act.png') no-repeat 0px 0px;
+  background-position: -10px -10px;
   float: left;
 }
 
 .vud-widget-plain .up-inactive {
-  background: url('a_up_inact.png') no-repeat 0px 0px;
+  background-position: -10px -82px;
   float: left;
 }
 
 .vud-widget-plain .down-active,
 .vud-widget-plain .down-inactive:hover {
-  background: url('a_down_act.png') no-repeat 0px 0px;
+  background-position: -10px -118px;
   float: right;
 }
 
 .vud-widget-plain .down-inactive {
-  background: url('a_down_inact.png') no-repeat 0px 0px;
+  background-position: -10px -46px;
   float: right;
 }
 
@@ -87,4 +88,20 @@
 
 .vud-widget-plain .ctools-ajaxing span {
   display: none;
+}
+
+/**
+ * Hide elements visually, but keep them available for screen-readers.
+ *
+ * Used for information required for screen-reader users to understand and use
+ * the site where visual display is undesirable. Information provided in this
+ * manner should be kept concise, to avoid unnecessary burden on the user. Must
+ * not be used for focusable elements (such as links and form elements) as this
+ * causes issues for keyboard only or voice recognition users. "!important" is
+ * used to prevent unintentional overrides.
+ */
+.element-invisible {
+  position: absolute !important;
+  clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+  clip: rect(1px, 1px, 1px, 1px);
 }

@@ -1,4 +1,4 @@
-/* $Id: README.txt,v 2.3.4.11 2010/05/29 15:57:19 danielkm Exp $ */
+/* $Id: README.txt,v 3.1.2.2 2010/08/20 07:12:45 danielkm Exp $ */
 
 
                       TAXONOMY CSV IMPORT/EXPORT
@@ -20,7 +20,7 @@ http://groups.drupal.org/soc-2006-import-export-api.
 
 Taxonomy XML (http://drupal.org/project/taxonomy_xml) is perfect for
 standardized taxonomies and vocabularies importation. Despite its name, it can
-import csv files too, but only if they are ISO 2788 formated.
+import csv files too, but only if they are ISO 2788 formatted.
 
 When you want to quick import a non-standardized vocabulary, for example an
 old thesaurus or a simple list of children, synonyms, related terms,
@@ -64,6 +64,8 @@ See online issues:
   -----
 
 See Advanced help in Help > Taxonomy CSV import/export.
+
+See technical infos in TECHINFO.txt.
 
 
 -- CONTACT --

@@ -1,5 +1,5 @@
 <?php
-// $Id: outline.install,v 1.20 2008/11/30 01:49:19 augustin Exp $
+// $Id: outline.install,v 1.19 2008/11/28 12:01:39 augustin Exp $
 
 /**
  * Implementation of hook_install().
@@ -23,31 +23,6 @@ function outline_install() {
   }
 }
 
-/**
- * Implementation of hook_enable().
- *
- * Check if more nodes have been outlined by book.module after the last time outline.module was enabled.
- */
-function outline_enable() {
-  // 1- Import data from book.module where we don't have a corresponding outline entry:
-  $result = db_query('SELECT b.*, n.vid, n.uid, o.bid AS o_bid FROM {book} b JOIN {node} n ON n.nid = b.nid 
-    LEFT JOIN {outline_book} o ON o.bid = b.bid AND o.book_vid = n.vid WHERE b.nid = b.bid AND o.bid IS NULL');
-  while ($book = db_fetch_object($result)) {
-    db_query("INSERT INTO {outline_book} (bid, book_vid, uid) VALUES (%d, %d, %d)", 
-      $book->bid, $book->vid, $book->uid);
-  }
-  $result = db_query('SELECT b.*, n.vid, n2.vid AS book_vid, o.nid AS o_nid FROM {book} b JOIN {node} n on n.nid = b.nid 
-    JOIN {node} n2 ON n2.nid = b.bid LEFT JOIN {outline_node} o ON o.nid = n.nid AND o.is_default = 1 AND o.vid = n.vid
-    WHERE o.nid IS NULL');
-  while ($page = db_fetch_object($result)) {
-    db_query("INSERT INTO {outline_node} (mlid, nid, vid, bid, book_vid) 
-      VALUES (%d, %d, %d, %d, %d)", 
-      $page ->mlid, $page->nid, $page->vid, $page->bid, $page->book_vid);
-  }
-  
-  // 2- Update data where the vid, the place in the outline has changed, where nodes have been removed, etc...
-  // TODO.
-}
 
 /**
  * Implementation of hook_schema().

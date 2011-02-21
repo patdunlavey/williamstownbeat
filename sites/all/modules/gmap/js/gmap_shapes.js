@@ -1,4 +1,4 @@
-/* $Id: gmap_shapes.js,v 1.7 2009/04/06 21:23:17 bec Exp $ */
+/* $Id: gmap_shapes.js,v 1.7.2.1 2010/07/03 00:35:46 bdragon Exp $ */
 
 /**
  * @file
@@ -89,6 +89,9 @@ Drupal.gmap.addHandler('gmap', function (elem) {
     $.each(style, function (i, n) {
       cargs.push(n);
     });
+    if (shape.opts) {
+      cargs.push(shape.opts);
+    }
     var Pg = function (args) {
       GPolygon.apply(this, args);
     };

@@ -1,14 +1,12 @@
-<<<<<<< HEAD
 sites/default/files/css/*
 settings.php
 sites/default/files/backup_migrate/*
 sites/default/files/js/*
 
-=======
 sites/default/files/*
 .htaccess
 /*.buildpath
 /*.project
 /.settings/
->>>>>>> origin/master
 /sync-commands.txt
+/cache/*

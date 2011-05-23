@@ -1,5 +1,28 @@
 <?php
 /**
+ * Implementation of hook_init
+ */
+function zzwb_custom_init() {
+  // add google admanager section keys and values
+  if (module_exists('google_admanager')) {
+    // we use the first argument in the path for the sections we care about
+    switch (arg(0)) {
+      case 'dining':
+      google_admanager_add_attribute('Section', 'Dining');
+      break;
+      case 'habitat':
+      google_admanager_add_attribute('Section', 'Habitat');
+      break;
+      case 'living':
+      google_admanager_add_attribute('Section', 'Living');
+      break;
+      default:
+      google_admanager_add_attribute('Section', 'All');
+    }
+  }
+}
+
+/**
  * Implementation of hook_form_alter().
  *
  * The function is named modulename_form_alter.

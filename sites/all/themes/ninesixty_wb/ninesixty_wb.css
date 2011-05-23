@@ -440,6 +440,12 @@ div.quicktabs_main,
 border:1px solid #CCCCCC;
 padding:5px;
 }
+
+.sidebar .block-google_admanager .content {
+border:none;
+padding:0px;
+		
+	}
 .not-front .view-og-ghp-cm-ron .views-field-title a, 
 	.view-cm-frontpage .views-field-title a, 
 	.view-flash-article .views-field-title a, 
@@ -709,4 +715,10 @@ height:240px;
 }
 .view-sidebar-ads .views-row-last {
 	margin-bottom:0;
+}
+
+#topbanner .block-google_admanager {
+    position: absolute;
+    right: 5px;
+    top: 5px;
 }

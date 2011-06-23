@@ -1,68 +1,123 @@
 <?php
 /**
+ * Implementation of hook_init
+ */
+function zzwb_custom_init() {
+  // add google admanager section keys and values
+  if (module_exists('google_admanager')) {
+    // we use the first argument in the path for the sections we care about
+    switch (arg(0)) {
+      case 'dining':
+        google_admanager_add_attribute('Section', 'Dining');
+        break;
+      case 'habitat':
+        google_admanager_add_attribute('Section', 'Habitat');
+        break;
+      case 'living':
+        google_admanager_add_attribute('Section', 'Living');
+        break;
+      default:
+        google_admanager_add_attribute('Section', 'All');
+    }
+  }
+}
+
+/**
  * Implementation of hook_form_alter().
  *
  * The function is named modulename_form_alter.
  */
 function zzwb_custom_form_alter(&$form, $form_state, $form_id) {
-    // Normally a switch is used because you may want to alter more than
-    // one form and it is easy to add a new case for each form.
-    //    dpm($form_id);
-    switch ($form_id) {
-        case 'views_bulk_operations_form__1':
-            unset($form['do']['#options'][1]);
-            if(is_array($form['taxonomy'])) {
-                $taxonomykeys = array_keys($form['taxonomy']);
-                foreach($taxonomykeys as $taxonomykey) {
-                    if($taxonomykey<>9 && $taxonomykey<>6 && substr_compare($taxonomykey, "#", 0, 1)) {
-                        unset($form['taxonomy'][$taxonomykey]);
-                    }
-                }
+  // Normally a switch is used because you may want to alter more than
+  // one form and it is easy to add a new case for each form.
+  //    dpm($form_id);
+  switch ($form_id) {
+    // get rid of unwanted taxonomy form elements
+    // for vocabularies we don't want to be modifiable in the
+    // "manage articles" views bulk operation form
+    case 'views_bulk_operations_form__1':
+      //          dpm($form_state['storage'][1]['objects']['selection']);
+      $selected_tids = array();
+      foreach($form_state['storage'][1]['objects']['selection'] as $selection) {
+        $selected_node = node_load($selection->nid);
+        $terms = taxonomy_node_get_terms_by_vocabulary($selected_node, 2);
+        foreach($terms as $term) {
+          $selected_tids[$term->tid] = $term->name;
+        }
+      }
+      //          dpm($selected_tids);
+//      dpm($form);
+      unset($form['do']['#options'][1]);
+      if(is_array($form['taxonomy'])) {
+        //                $taxonomykeys = array_keys($form['taxonomy']);
+        //                foreach($taxonomykeys as $taxonomykey) {
+          //                    if($taxonomykey<>9 && $taxonomykey<>6 && $taxonomykey<>"tags" && substr_compare($taxonomykey, "#", 0, 1)) {
+          ////                        unset($form['taxonomy'][$taxonomykey]);
+        //                    }
+        //                }
+        foreach($form['taxonomy'][2]['#options'] as $key=>$option) {
+          $option_tids = array_keys($option->option);
+          foreach($option_tids as $option_tid) {
+            if(!array_key_exists($option_tid, $selected_tids)) {
+              unset($form['taxonomy'][2]['#options'][$key]);
             }
-            break;
-            // if the user is does not have administer nodes permission, do not allow
-            // them to change/add audiences beyond the current group
-        case 'article_node_form':
-            if(!user_access('administer nodes') & isset($form['og_nodeapi']['visible']['og_groups']['#options'])) {
-                foreach($form['og_nodeapi']['visible']['og_groups']['#options'] as $key => $group) {
-                    if (!isset($form['og_initial_groups']['#value'][$key])) {
-                        unset($form['og_nodeapi']['visible']['og_groups']['#options'][$key]);
-                    }
-                }
-            }
-            break;
-            // we don't want users without administer_nodes permission to
-            // be able to set the "share" tag on feeds
-        case 'rss_persistent_node_form':
-            if(!user_access('administer nodes')) {
-                unset($form['taxonomy']['6']);
-            }
-            break;
-        case 'feed_ical_node_form':
-            if(!user_access('administer nodes')) {
-                unset($form['taxonomy']['6']);
-            }
-            break;
-        case 'feed_rss_node_form':
-            if(!user_access('administer nodes')) {
-                unset($form['taxonomy']['6']);
-            }
-            break;
-        case 'comment_form':
-            $form['#after_build'][] = 'zzwb_process_comment_form';
-            break;
-        case 'user_login':
-            break;
-        case 'user_register':
-            $form['Personal information']['#weight'] = -10;
-            $form['locations'][0]['#description'] = 'Your address is used to find events close to you, it is not required.';
-            break;
-    }
+          }
+        }
+       $form['taxonomy'][2]['#title'] = "Tags (existing tags)";
+       $form['taxonomy'][2]['#weight'] = 1;
+       if(  count($form['taxonomy'][2]['#options']) <= 1) {
+          $form['taxonomy'][2]['#description'] = "There are no existing tags on these articles!";
+        }
+        else
+        {
+          $form['taxonomy'][2]['#description'] = "Optional: Select one or more existing terms. (ctrl-click or command-click to select multiple terms)";
+        }
+      }
+//      dpm($form);
+      break;
+      // if the user is does not have administer nodes permission, do not allow
+      // them to change/add audiences beyond the current group
+    case 'article_node_form':
+      if(!user_access('administer nodes') & isset($form['og_nodeapi']['visible']['og_groups']['#options'])) {
+        foreach($form['og_nodeapi']['visible']['og_groups']['#options'] as $key => $group) {
+          if (!isset($form['og_initial_groups']['#value'][$key])) {
+            unset($form['og_nodeapi']['visible']['og_groups']['#options'][$key]);
+          }
+        }
+      }
+      break;
+      // we don't want users without administer_nodes permission to
+      // be able to set the "share" tag on feeds
+    case 'rss_persistent_node_form':
+      if(!user_access('administer nodes')) {
+        unset($form['taxonomy']['6']);
+      }
+      break;
+    case 'feed_ical_node_form':
+      if(!user_access('administer nodes')) {
+        unset($form['taxonomy']['6']);
+      }
+      break;
+    case 'feed_rss_node_form':
+      if(!user_access('administer nodes')) {
+        unset($form['taxonomy']['6']);
+      }
+      break;
+    case 'comment_form':
+      $form['#after_build'][] = 'zzwb_process_comment_form';
+      break;
+    case 'user_login':
+      break;
+    case 'user_register':
+      $form['Personal information']['#weight'] = -10;
+      $form['locations'][0]['#description'] = 'Your address is used to find events close to you, it is not required.';
+      break;
+  }
 }
 
 function zzwb_process_comment_form(&$form) {
-    $form['comment_filter']['format']['#type'] = 'hidden';
-    return $form;
+  $form['comment_filter']['format']['#type'] = 'hidden';
+  return $form;
 
 }
 
@@ -100,15 +155,15 @@ function bb_og_block_details() {
       $links['subscribers'] = $txt;
       $manager = user_load($node->uid);
       if($manager->contact) {
-          // I want to get the themed username, but if it makes a link to the profile page, I want to remove that
-          $manager_link = strip_tags(theme('username', $node));
-          $manager_link = l($manager_link,'user/'.$node->uid.'/contact');
-          $links['manager'] = t('Manager: !name', array('!name' => $manager_link));
+        // I want to get the themed username, but if it makes a link to the profile page, I want to remove that
+        $manager_link = strip_tags(theme('username', $node));
+        $manager_link = l($manager_link,'user/'.$node->uid.'/contact');
+        $links['manager'] = t('Manager: !name', array('!name' => $manager_link));
       }
       else {
-          $links['manager'] = t('Manager: !name', array('!name' => theme('username', $node)));
+        $links['manager'] = t('Manager: !name', array('!name' => theme('username', $node)));
       }
-      
+
       // Site admins get a Join link if they are not yet subscribed.
       $subscribe = isset($subscription) && og_is_group_member($node->nid, FALSE) ? l(t('My membership'), "og/manage/$node->nid") : og_subscribe_link($node);
       if(isset($subscribe)) {

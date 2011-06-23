@@ -90,17 +90,17 @@ function ajax_get_login_block_content() {
   global $user;
  $user_uri = theme('my_account_link', array());
   $login_uri = theme('user_login_link', array(), array());
-  $register_uri = theme('user_register_link', array('title'=>'To subscribe to content, to post comments, or to create a channel'), array());
+  $register_uri = theme('user_register_link', array('bt-xtitle'=>'To subscribe to content, to post comments, or to create a channel'), array());
   $logout_uri = theme('user_logout_link', array());
   if (user_is_anonymous()){
-    $block_content = "<div id='ajax_register_block_anonymous' class='ajax_register_block leaf first'><span id='ajax_register_login_url'>". $login_uri ."</span><span id='ajax_register_register_url' class='leaf last'>". $register_uri ."</span></div>";
+    $block_content = "<div id='ajax_register_block_anonymous' class='ajax_register_block'><span id='ajax_register_login_url'>". $login_uri ."</span><span id='ajax_register_register_url'>". $register_uri ."</span></div>";
     return $block_content;
   }
   else{
 if($user->uid > 0) {
     $welcomename = empty($user->givenName) ? theme('username', $user) : $user->givenName; 
 }
-      $block_content = "<div id='ajax_register_block_authenticated' class='ajax_register_block leaf first'>".t("Welcome ")."<span class='ajax_register_user_name'>". $welcomename ."</span><span class='ajax_register_account_uri'><a href='/my'>My Beat</a></span><span class='ajax_register_account_uri'>". $user_uri ."</span><span class='ajax_register_logout_uri leaf last'>". $logout_uri ."</span></div>";
+      $block_content = "<div id='ajax_register_block_authenticated' class='ajax_register_block'>".t("Welcome")."<span class='ajax_register_user_name'>". $welcomename ."</span><span class='ajax_register_account_uri'><a href='/my'>My Beat</a></span><span class='ajax_register_account_uri'>". $user_uri ."</span><span class='ajax_register_logout_uri'>". $logout_uri ."</span></div>";
     return $block_content;
   }
 }

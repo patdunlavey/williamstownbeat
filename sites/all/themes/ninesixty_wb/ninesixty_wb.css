@@ -710,3 +710,9 @@ height:240px;
 .view-sidebar-ads .views-row-last {
 	margin-bottom:0;
 }
+
+#topbanner .block-google_admanager {
+    position: absolute;
+    right: 5px;
+    top: 5px;
+}
